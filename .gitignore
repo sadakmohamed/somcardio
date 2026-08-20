@@ -1,0 +1,35 @@
+# =====================================================================
+# Somali Cardiac Society — Git Ignore Configuration
+# =====================================================================
+
+# Environment Configuration (CRITICAL: Never commit credentials)
+.env
+.env.local
+.env.production
+*.env
+
+# Uploads (User generated files / images - keep directory structure)
+uploads/*
+!uploads/.gitkeep
+!uploads/members/
+!uploads/content/
+
+# Logs & Temporary Files
+*.log
+error_log
+php_errors.log
+tmp/
+temp/
+
+# Database Dumps (Ignore raw SQL exports if generated locally)
+database/*.bak
+database/*.dump
+
+# Operating System & IDE Files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
