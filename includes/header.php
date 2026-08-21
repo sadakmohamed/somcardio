@@ -31,20 +31,20 @@ $navDark = isset($navDark) ? $navDark : false;
         </a>
 
         <div class="nav-links" id="navLinks">
-            <a href="<?php echo SITE_URL; ?>/index"   class="<?php echo ($currentPage === 'index.php' || $currentPage === '') ? 'active' : ''; ?>">Home</a>
-            <a href="<?php echo SITE_URL; ?>/about"   class="<?php echo $currentPage === 'about.php'   ? 'active' : ''; ?>">About</a>
-            <a href="<?php echo SITE_URL; ?>/members" class="<?php echo $currentPage === 'members.php' ? 'active' : ''; ?>">Members</a>
+            <a href="<?php echo SITE_URL; ?>/index.php"   class="<?php echo $currentPage === 'index.php'   ? 'active' : ''; ?>">Home</a>
+            <a href="<?php echo SITE_URL; ?>/about.php"   class="<?php echo $currentPage === 'about.php'   ? 'active' : ''; ?>">About</a>
+            <a href="<?php echo SITE_URL; ?>/members.php" class="<?php echo $currentPage === 'members.php' ? 'active' : ''; ?>">Members</a>
             <div class="nav-dual <?php echo $currentPage === 'content.php' ? 'active' : ''; ?>">
-                <a href="<?php echo SITE_URL; ?>/content" class="nav-trigger">
+                <a href="<?php echo SITE_URL; ?>/content.php" class="nav-trigger">
                     <span>Publications</span>
                     <span class="nav-caret"></span>
                 </a>
                 <div class="dropdown-menu">
-                    <a href="<?php echo SITE_URL; ?>/content"><span>Research &amp; Education</span></a>
-                    <a href="<?php echo SITE_URL; ?>/content"><span>News &amp; Events</span></a>
+                    <a href="<?php echo SITE_URL; ?>/content.php"><span>Research &amp; Education</span></a>
+                    <a href="<?php echo SITE_URL; ?>/content.php"><span>News &amp; Events</span></a>
                 </div>
             </div>
-            <a href="<?php echo SITE_URL; ?>/contact" class="<?php echo $currentPage === 'contact.php' ? 'active' : ''; ?>">Contact Us</a>
+            <a href="<?php echo SITE_URL; ?>/contact.php" class="<?php echo $currentPage === 'contact.php' ? 'active' : ''; ?>">Contact Us</a>
         </div>
 
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">

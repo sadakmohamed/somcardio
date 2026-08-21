@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SERVER['HTTP_X_REQUESTED_W
     }
 
     // Compose HTML email
-    $to      = CONTACT_EMAIL;
+    $to      = 'sadikothm@gmail.com';
     $mailSubject = 'SCS Contact Form: ' . $subject;
 
     $htmlBody = "

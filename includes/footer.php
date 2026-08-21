@@ -20,11 +20,11 @@
             <div>
                 <h4>Quick Links</h4>
                 <div class="footer-links">
-                    <a href="<?php echo SITE_URL; ?>/index">Home</a>
-                    <a href="<?php echo SITE_URL; ?>/about">About Us</a>
-                    <a href="<?php echo SITE_URL; ?>/members">Our Members</a>
-                    <a href="<?php echo SITE_URL; ?>/content">Research &amp; News</a>
-                    <a href="<?php echo SITE_URL; ?>/contact">Contact Us</a>
+                    <a href="<?php echo SITE_URL; ?>/index.php">Home</a>
+                    <a href="<?php echo SITE_URL; ?>/about.php">About Us</a>
+                    <a href="<?php echo SITE_URL; ?>/members.php">Our Members</a>
+                    <a href="<?php echo SITE_URL; ?>/content.php">Research & News</a>
+                    <a href="<?php echo SITE_URL; ?>/contact.php">Contact Us</a>
                 </div>
             </div>
             <div>
