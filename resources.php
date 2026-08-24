@@ -80,7 +80,7 @@ include __DIR__ . '/includes/header.php';
 
 <?php else: ?>
 <!-- Resources Listing -->
-<div class="page-header" style="background: linear-gradient(135deg, rgba(0,27,46,0.9), rgba(0,40,69,0.92)), url('<?php echo SITE_URL; ?>/images/profile.jpeg') center/cover no-repeat;">
+<div class="page-header" style="background: linear-gradient(135deg, rgba(0,27,46,0.9), rgba(0,40,69,0.68)), url('<?php echo SITE_URL; ?>/images/resource.png') center/cover no-repeat;">
     <div class="container">
         <h1>Resources</h1>
         <p>Explore clinical guidelines, research & publications, and education & training materials</p>

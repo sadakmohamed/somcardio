@@ -43,6 +43,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Keep desktop dropdowns open briefly while the pointer moves to a submenu.
+    document.querySelectorAll('.nav-dual').forEach(dropdown => {
+        let closeTimer;
+        const openDropdown = () => {
+            clearTimeout(closeTimer);
+            dropdown.classList.add('is-open');
+        };
+        const closeDropdown = () => {
+            clearTimeout(closeTimer);
+            closeTimer = setTimeout(() => dropdown.classList.remove('is-open'), 900);
+        };
+        dropdown.addEventListener('mouseenter', openDropdown);
+        dropdown.addEventListener('mouseleave', closeDropdown);
+        dropdown.addEventListener('focusin', openDropdown);
+        dropdown.addEventListener('focusout', closeDropdown);
+    });
+
     // ========== Navbar Scroll Effect ==========
     const navbar = document.querySelector('.navbar');
     if (navbar) {

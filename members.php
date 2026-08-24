@@ -19,7 +19,7 @@ include __DIR__ . '/includes/header.php';
 ?>
 
 <!-- Page Header -->
-<div class="page-header" style="background: linear-gradient(135deg, rgba(0,27,46,0.9), rgba(0,40,69,0.92)), url('<?php echo SITE_URL; ?>/images/profile.jpeg') center/cover no-repeat;">
+<div class="page-header" style="background: linear-gradient(135deg, rgba(0,27,46,0.9), rgba(0,40,69,0.68)), url('<?php echo SITE_URL; ?>/images/profile.png') center/cover no-repeat;">
     <div class="container">
         <h1>Our leadership</h1>
         <p>Meet the leadership of the Somali Cardiac Society</p>
@@ -36,7 +36,7 @@ include __DIR__ . '/includes/header.php';
     <div class="container">
         <?php if (!empty($members)): ?>
         <div class="section-header fade-in">
-            <h2>Registered Specialists</h2>
+            <h2>Our Leadership</h2>
             <p><!--<?php echo count($members); ?>-->The Executive Council provides strategic leadership, professional oversight and institutional direction in support of the Society’s mission to advance cardiovascular health in Somalia</p>
             <div class="section-line"></div>
         </div>

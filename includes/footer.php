@@ -21,10 +21,10 @@
                 <h4>Quick Links</h4>
                 <div class="footer-links">
                     <a href="<?php echo SITE_URL; ?>/index.php">Home</a>
-                    <a href="<?php echo SITE_URL; ?>/about.php">About SCS</a>
+                    <a href="<?php echo SITE_URL; ?>/about.php">About Us</a>
                     <a href="<?php echo SITE_URL; ?>/president-message.php">President's Message</a>
                     <a href="<?php echo SITE_URL; ?>/members.php">Leadership</a>
-                    <a href="<?php echo SITE_URL; ?>/resources.php">Resources</a>
+                    <!-- <a href="<?php echo SITE_URL; ?>/resources.php">Resources</a> -->
                     <a href="<?php echo SITE_URL; ?>/news-events.php">News &amp; Events</a>
                     <a href="<?php echo SITE_URL; ?>/contact.php">Contact Us</a>
                 </div>

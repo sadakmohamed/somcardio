@@ -33,7 +33,7 @@ $navDark = true; // Dark navbar header across all pages so mobile logo & hamburg
             <!-- About SCS Dropdown -->
             <div class="nav-dual <?php echo in_array($currentPage, ['about.php', 'president-message.php']) ? 'active' : ''; ?>">
                 <a href="<?php echo SITE_URL; ?>/about.php" class="nav-trigger">
-                    <span>About SCS</span>
+                    <span>About Us</span>
                     <span class="nav-caret"></span>
                 </a>
                 <div class="dropdown-menu">

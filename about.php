@@ -11,7 +11,7 @@ include __DIR__ . '/includes/header.php';
 ?>
 
 <!-- Page Header -->
-<div class="page-header" style="background: linear-gradient(135deg, rgba(0,27,46,0.9), rgba(0,40,69,0.92)), url('<?php echo SITE_URL; ?>/images/profile.jpeg') center/cover no-repeat;">
+<div class="page-header" style="background: linear-gradient(135deg, rgba(0,27,46,0.9), rgba(0,40,69,0.68)), url('<?php echo SITE_URL; ?>/images/about1.png') center/cover no-repeat;">
     <div class="container">
         <h1>About SCS</h1>
         <p>Advancing cardiovascular health care across Somalia since 2024</p>
@@ -34,11 +34,13 @@ include __DIR__ . '/includes/header.php';
                 <p>We also work with government institutions, hospitals, universities, professional associations, civil-society organisations and international partners to advance cardiovascular prevention, improve referral pathways and expand equitable access to safe, affordable and high-quality care</p>
                 <p>Through this work, SCS aims to be a strong and trusted professional institution that helps reduce the burden of cardiovascular disease and supports better outcomes for people and communities throughout Somalia</p>
             </div>
-            <div style="display:flex;flex-direction:column;gap:20px;">
-                <div style="background:var(--primary-blue-light);border-radius:var(--radius-md);padding:40px;text-align:center;">
-                    <img src="<?php echo SITE_URL; ?>/images/logo.png" alt="SCS Logo" style="max-width:200px;margin:0 auto;">
-                    <p style="margin-top:20px;font-weight:600;color:var(--primary-blue);font-size:1.1rem;">Established 2024</p>
-                    <p style="color:var(--text-secondary);font-size:0.9rem;">Mogadishu, Somalia</p>
+            <div class="about-profile-panel">
+                <div class="about-profile-image">
+                    <img src="<?php echo SITE_URL; ?>/images/profile1.jpeg" alt="Somali Cardiac Society profile">
+                    <div class="about-profile-overlay">
+                        <span class="about-profile-seal">SCS - 2024</span>
+                        <span class="about-profile-caption">Somali Cardiac Society</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -145,8 +147,15 @@ include __DIR__ . '/includes/header.php';
 <!-- CTA -->
 <section class="quick-contact">
     <div class="container fade-in">
-        <h3>Join the Somali Cardiac Society</h3>
-        <p>Connect with fellow cardiac professionals and contribute to advancing cardiovascular healthcare in Somalia</p>
+          <h3>
+            Work With Us
+        </h3>
+
+
+        <p>
+            Connect with the Somali Cardiac Society for collaboration, membership, research, 
+           <br> education, and partnerships advancing cardiovascular health in Somalia
+        </p>
         <a href="contact.php" class="btn btn-lg" style="background:white;color:var(--primary-blue);font-weight:700;">Get In Touch</a>
     </div>
 </section>

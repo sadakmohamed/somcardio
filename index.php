@@ -291,8 +291,8 @@ try {
 
 
                 <div class="stat-number"
-                     data-count="<?php echo $memberCount ?: 50; ?>"
-                     data-suffix="+">
+                     data-count="3"
+                     data-suffix="">
 
                     0
 
@@ -300,7 +300,40 @@ try {
 
 
                 <div class="stat-label">
-                    Registered Specialists
+                    Years of Service
+                </div>
+
+            </div>
+
+
+            <div class="stat-card fade-in">
+
+                <div class="stat-icon"
+                     style="background:var(--primary-red-light);color:var(--primary-red);">
+
+                    <svg width="28"
+                         height="28"
+                         fill="currentColor"
+                         viewBox="0 0 24 24">
+
+                        <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.1-.89-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+
+                    </svg>
+
+                </div>
+
+
+                <div class="stat-number"
+                    
+                     data-suffix="+">
+
+                    7+
+
+                </div>
+
+
+                <div class="stat-label">
+                    National & International Collaborations
                 </div>
 
             </div>
@@ -356,39 +389,6 @@ try {
 
 
                 <div class="stat-number"
-                     data-count="3"
-                     data-suffix="">
-
-                    0
-
-                </div>
-
-
-                <div class="stat-label">
-                    Years of Service
-                </div>
-
-            </div>
-
-
-            <div class="stat-card fade-in">
-
-                <div class="stat-icon"
-                     style="background:var(--primary-red-light);color:var(--primary-red);">
-
-                    <svg width="28"
-                         height="28"
-                         fill="currentColor"
-                         viewBox="0 0 24 24">
-
-                        <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.11.89 2 2 2h14c1.11 0 2-.89 2-2V5c0-1.1-.89-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
-
-                    </svg>
-
-                </div>
-
-
-                <div class="stat-number"
                      data-count="12"
                      data-suffix="+">
 
@@ -419,7 +419,7 @@ try {
     <div class="container">
         <div class="section-header fade-in">
             <h2>Our Strategic Pillars</h2>
-            <p>Advancing cardiovascular healthcare across Somalia through four core focus areas</p>
+            <p>Advancing cardiovascular healthcare across Somalia through three strategic pillars</p>
             <div class="section-line"></div>
         </div>
 
@@ -428,33 +428,27 @@ try {
                 <div style="width: 56px; height: 56px; border-radius: 14px; background: var(--primary-blue-light); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                     <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
                 </div>
-                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px;">Education &amp; Training</h3>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">Continuous medical education, specialized workshops, and practical learning programs for doctors and cardiac healthcare personnel.</p>
+                <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Governance &amp; Advocacy &amp; Institutional Development & Partnerships</h3>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">Build a professional and transparent Society with strong governance, membership, advocacy, national collaboration and international partnerships</p>
             </div>
 
             <div style="background: var(--bg-white); padding: 32px 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center; transition: var(--transition);" class="stat-card">
                 <div style="width: 56px; height: 56px; border-radius: 14px; background: var(--primary-red-light); color: var(--primary-red); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                     <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
                 </div>
-                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px;">Cardiovascular Research</h3>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">Promoting epidemiological studies, clinical research, and data gathering targeted specifically at local health priorities in Somalia.</p>
+                <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Education, CME, Research, Clinical Standards & Capacity Building</h3>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">Improve professional knowledge and skills through CME, public awareness, outreach, research, guidelines and clinical quality improvement</p>
             </div>
 
             <div style="background: var(--bg-white); padding: 32px 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center; transition: var(--transition);" class="stat-card">
                 <div style="width: 56px; height: 56px; border-radius: 14px; background: var(--primary-blue-light); color: var(--primary-blue); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
                     <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                 </div>
-                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px;">Clinical Guidelines</h3>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">Formulating standardized evidence-based practice guidelines to elevate cardiovascular patient outcomes and treatment safety.</p>
+                <h3 style="font-size: 1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 10px;">Financial Sustainability & Income Generation</h3>
+                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">Create diversified, ethical and traceable income to support approved Society activities</p>
             </div>
 
-            <div style="background: var(--bg-white); padding: 32px 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center; transition: var(--transition);" class="stat-card">
-                <div style="width: 56px; height: 56px; border-radius: 14px; background: var(--primary-red-light); color: var(--primary-red); display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
-                    <svg width="28" height="28" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
-                </div>
-                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px;">Global Partnerships</h3>
-                <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;">Collaborating with regional African, European, and international cardiovascular societies to exchange knowledge and technology.</p>
-            </div>
+           
         </div>
     </div>
 </section>
@@ -477,7 +471,7 @@ try {
 
             <p>
                 Stay informed with our latest research publications,
-                educational programs, news, and upcoming cardiac events.
+                educational programs, news, and upcoming cardiac events
             </p>
 
 
@@ -723,13 +717,13 @@ try {
     <div class="container fade-in">
 
         <h3>
-            Need Cardiac Care Information?
+            Work With Us
         </h3>
 
 
         <p>
-            Get in touch with the Somali Cardiac Society for inquiries
-            about cardiovascular health services in Somalia.
+            Connect with the Somali Cardiac Society for collaboration, membership, research, 
+           <br> education, and partnerships advancing cardiovascular health in Somalia
         </p>
 
 
