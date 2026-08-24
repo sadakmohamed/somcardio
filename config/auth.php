@@ -6,10 +6,11 @@
 
 // Start secure session
 if (session_status() === PHP_SESSION_NONE) {
+    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
-        'secure'   => false, // Set to true in production with HTTPS
+        'secure'   => $isSecure, // Auto true on HTTPS (production)
         'httponly'  => true,
         'samesite'  => 'Strict'
     ]);

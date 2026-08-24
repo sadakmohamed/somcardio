@@ -37,21 +37,41 @@ function env(string $key, mixed $default = null): mixed {
 }
 
 // ── 3. System Constants ──────────────────────────────────────────────
-define('APP_ENV',       env('APP_ENV', 'development'));
-define('SITE_NAME',     env('APP_NAME', 'Somali Cardiac Society'));
-define('SITE_URL',      env('APP_URL', '/ssc'));
+define('APP_ENV',  env('APP_ENV', 'development'));
+define('SITE_NAME', env('APP_NAME', 'Somali Cardiac Society'));
 
-define('DB_HOST',       env('DB_HOST', 'localhost'));
-define('DB_PORT',       env('DB_PORT', '3306'));
-define('DB_NAME',       env('DB_NAME', 'scs_db'));
-define('DB_USER',       env('DB_USER', 'root'));
-define('DB_PASS',       env('DB_PASS', ''));
-define('DB_CHARSET',    env('DB_CHARSET', 'utf8mb4'));
+// ── Auto-detect SITE_URL base path ───────────────────────────────────
+// Works on local XAMPP (e.g. /ssc) and production root (/) automatically.
+// Compares the project root directory against the server document root
+// and converts the file-system difference into a URL path segment.
+(function () {
+    $projectRoot  = str_replace('\\', '/', realpath(__DIR__ . '/..'));
+    $documentRoot = str_replace('\\', '/', realpath($_SERVER['DOCUMENT_ROOT'] ?? ''));
+
+    if ($documentRoot !== '' && str_starts_with($projectRoot, $documentRoot)) {
+        // Strip the document root → gives "/ssc" locally, "" on production
+        $base = substr($projectRoot, strlen($documentRoot));
+    } else {
+        // Fallback: use APP_URL from .env, stripping scheme+host
+        $appUrl = env('APP_URL', '');
+        $parsed = parse_url($appUrl);
+        $base   = rtrim($parsed['path'] ?? '', '/');
+    }
+
+    define('SITE_URL', $base); // e.g. "/ssc" locally, "" on production root
+})();
+
+define('DB_HOST',    env('DB_HOST', 'localhost'));
+define('DB_PORT',    env('DB_PORT', '3306'));
+define('DB_NAME',    env('DB_NAME', 'scs_db'));
+define('DB_USER',    env('DB_USER', 'root'));
+define('DB_PASS',    env('DB_PASS', ''));
+define('DB_CHARSET', env('DB_CHARSET', 'utf8mb4'));
 
 define('CONTACT_EMAIL', env('CONTACT_EMAIL', 'sadikothm@gmail.com'));
 
-define('UPLOADS_DIR',   __DIR__ . '/../uploads');
-define('UPLOADS_URL',   SITE_URL . '/uploads');
+define('UPLOADS_DIR', __DIR__ . '/../uploads');
+define('UPLOADS_URL', SITE_URL . '/uploads');
 
 // ── 4. Error Display Policy Based on Environment ─────────────────────
 if (APP_ENV === 'production') {

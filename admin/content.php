@@ -5,6 +5,12 @@
 require_once __DIR__ . '/../includes/admin_layout.php';
 
 $db = getDB();
+try {
+    $db->exec("ALTER TABLE content MODIFY COLUMN category VARCHAR(50) NOT NULL");
+} catch (Exception $e) {
+    // Column already VARCHAR or migration not required
+}
+
 $action = $_GET['action'] ?? 'list';
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
@@ -176,8 +182,14 @@ if ($action === 'add' || $action === 'edit') {
                     <div class="form-group">
                         <label for="category">Category *</label>
                         <select id="category" name="category" required>
+                            <option value="guidelines" <?php echo $content['category'] === 'guidelines' ? 'selected' : ''; ?>>Clinical Guidelines</option>
                             <option value="research" <?php echo $content['category'] === 'research' ? 'selected' : ''; ?>>Research</option>
+                            <option value="publication" <?php echo $content['category'] === 'publication' ? 'selected' : ''; ?>>Publication</option>
                             <option value="education" <?php echo $content['category'] === 'education' ? 'selected' : ''; ?>>Education</option>
+                            <option value="seminar" <?php echo $content['category'] === 'seminar' ? 'selected' : ''; ?>>Seminar</option>
+                            <option value="webinar" <?php echo $content['category'] === 'webinar' ? 'selected' : ''; ?>>Webinar</option>
+                            <option value="workshop" <?php echo $content['category'] === 'workshop' ? 'selected' : ''; ?>>Workshop</option>
+                            <option value="course" <?php echo $content['category'] === 'course' ? 'selected' : ''; ?>>Course</option>
                             <option value="news" <?php echo $content['category'] === 'news' ? 'selected' : ''; ?>>News</option>
                             <option value="events" <?php echo $content['category'] === 'events' ? 'selected' : ''; ?>>Events</option>
                         </select>

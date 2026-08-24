@@ -1,24 +1,24 @@
 # =====================================================================
-# Somali Cardiac Society (SCS) — Apache .htaccess Configuration
-# Security, Clean URLs (.php removal), Caching & Hardening
+# Somali Cardiac Society (SCS) — Apache .htaccess
+# Works on both local XAMPP (/ssc/) and production root domain (/)
 # =====================================================================
 
 # 1. Disable Directory Browsing
 Options -Indexes
 
-# 2. Set Default Charset & Timezone
+# 2. Set Default Charset
 AddDefaultCharset UTF-8
 
 # 3. Security Headers
 <IfModule mod_headers.c>
-    Header set X-Frame-Options "SAMEORIGIN"
-    Header set X-Content-Type-Options "nosniff"
-    Header set X-XSS-Protection "1; mode=block"
-    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
 # 4. Block Access to Sensitive Files & Folders
-<FilesMatch "^\.(env|gitignore|git|ht.*)|.*\.(sql|bak|log|md|sh)$">
+<FilesMatch "^(\.env|\.gitignore|\.git|.*\.sql|.*\.bak|.*\.log|.*\.sh|.*\.md)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -28,30 +28,46 @@ AddDefaultCharset UTF-8
     </IfModule>
 </FilesMatch>
 
-# 5. URL Rewriting (Clean URLs & Hiding .php Extensions)
+# Block direct access to internal folders
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /ssc/
 
-    # Block direct access to internal include/config/database folders
-    RewriteRule ^(config|includes|database)/ - [F,L]
+    # ── Auto-detect base path (local /ssc/ vs production /) ──────────────
+    # Strip /ssc prefix if running locally under XAMPP
+    RewriteCond %{REQUEST_URI} ^/ssc/(.*)$
+    RewriteRule ^ - [E=BASE_PATH:/ssc]
 
-    # Force HTTPS (Uncomment line below in production server with SSL)
-    # RewriteCond %{HTTPS} off
-    # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    RewriteCond %{REQUEST_URI} !^/ssc/
+    RewriteRule ^ - [E=BASE_PATH:]
 
-    # Redirect external .php requests to extensionless URLs (e.g. /about.php -> /about)
-    RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /ssc/([^/]+)\.php\ HTTP/
-    RewriteRule ^([^/]+)\.php$ /ssc/$1 [R=301,L]
+    # ── Force HTTPS on production ─────────────────────────────────────────
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP_HOST} !^localhost [NC]
+    RewriteCond %{HTTP_HOST} !^127\. [NC]
+    RewriteCond %{HTTP_HOST} !^::1 [NC]
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 
-    # Map extensionless URLs internally to .php files (e.g. /about -> about.php)
+    # ── Block direct access to config/includes/database folders ───────────
+    RewriteRule ^(config|includes|database)(/|$) - [F,L]
+
+    # ── Remove .php extension: redirect /page.php → /page ─────────────────
+    # For local XAMPP (running under /ssc/)
+    RewriteCond %{THE_REQUEST} \s/ssc/([^/?\ ]+)\.php[\s?] [NC]
+    RewriteRule ^ /ssc/%1 [R=301,L]
+
+    # For production (running at root /)
+    RewriteCond %{THE_REQUEST} \s/([^/?\ ]+)\.php[\s?] [NC]
+    RewriteCond %{THE_REQUEST} !\s/ssc/ [NC]
+    RewriteRule ^ /%1 [R=301,L]
+
+    # ── Internally map extensionless URLs to .php files ───────────────────
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME}\.php -f
-    RewriteRule ^([^\.]+)$ $1.php [NC,L]
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^([^.]+)$ $1.php [NC,L]
 </IfModule>
 
-# 6. Browser Caching for Performance
+# 5. Browser Caching for Performance
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 1 month"
@@ -64,4 +80,11 @@ AddDefaultCharset UTF-8
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
     ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+# 6. Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css
+    AddOutputFilterByType DEFLATE application/javascript application/json
+    AddOutputFilterByType DEFLATE image/svg+xml
 </IfModule>

@@ -103,13 +103,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterTabs = document.querySelectorAll('.filter-tab');
     const filterItems = document.querySelectorAll('[data-category]');
     if (filterTabs.length && filterItems.length) {
+        // Group sub-categories under main filter tabs
+        const categoryMap = {
+            'all': null,
+            'guidelines': ['guidelines', 'clinical guidelines'],
+            'research': ['research', 'publication'],
+            'education': ['education', 'course', 'seminar', 'webinar', 'workshop'],
+            'events': ['events', 'workshop', 'seminar', 'webinar'],
+            'news': ['news']
+        };
+
         filterTabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 filterTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                const cat = tab.dataset.filter;
+                const filter = tab.dataset.filter.toLowerCase();
+                const allowedCategories = categoryMap[filter] || [filter];
+
                 filterItems.forEach(item => {
-                    if (cat === 'all' || item.dataset.category === cat) {
+                    const itemCat = (item.dataset.category || '').toLowerCase();
+                    const isMatch = (filter === 'all') || (allowedCategories && allowedCategories.includes(itemCat));
+
+                    if (isMatch) {
                         item.style.display = '';
                         setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 50);
                     } else {

@@ -4,7 +4,7 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <img src="<?php echo SITE_URL; ?>/images/logo.png" alt="Somali Cardiac Society">
-                <p>The Somali Society of Cardiology is dedicated to advancing cardiovascular health care across Somalia through research, education, and promoting best clinical practices.</p>
+                <p>The Somali Cardiac Society is dedicated to advancing cardiovascular health in Somalia through professional education, research, collaboration, advocacy and the promotion of high standards of clinical practice</p>
                 <div class="footer-social">
                     <a href="#" aria-label="Facebook">
                         <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
@@ -21,20 +21,20 @@
                 <h4>Quick Links</h4>
                 <div class="footer-links">
                     <a href="<?php echo SITE_URL; ?>/index.php">Home</a>
-                    <a href="<?php echo SITE_URL; ?>/about.php">About Us</a>
-                    <a href="<?php echo SITE_URL; ?>/members.php">Our Members</a>
-                    <a href="<?php echo SITE_URL; ?>/content.php">Research & News</a>
+                    <a href="<?php echo SITE_URL; ?>/about.php">About SCS</a>
+                    <a href="<?php echo SITE_URL; ?>/president-message.php">President's Message</a>
+                    <a href="<?php echo SITE_URL; ?>/members.php">Leadership</a>
+                    <a href="<?php echo SITE_URL; ?>/resources.php">Resources</a>
+                    <a href="<?php echo SITE_URL; ?>/news-events.php">News &amp; Events</a>
                     <a href="<?php echo SITE_URL; ?>/contact.php">Contact Us</a>
                 </div>
             </div>
             <div>
-                <h4>Focus Areas</h4>
+                <h4>Resources</h4>
                 <div class="footer-links">
-                    <a href="#">Cardiac Research</a>
-                    <a href="#">Medical Education</a>
-                    <a href="#">Public Awareness</a>
-                    <a href="#">Emergency Care</a>
-                    <a href="#">Clinical Guidelines</a>
+                    <a href="<?php echo SITE_URL; ?>/resources.php?category=guidelines">Clinical Guidelines</a>
+                    <a href="<?php echo SITE_URL; ?>/resources.php?category=research">Research &amp; Publications</a>
+                    <a href="<?php echo SITE_URL; ?>/resources.php?category=education">Education &amp; Training</a>
                 </div>
             </div>
             <div>

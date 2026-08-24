@@ -1,29 +1,30 @@
 <?php
 /**
- * Content Page — Research & Education / News & Events
+ * News & Events Page — Somali Cardiac Society
  */
 require_once __DIR__ . '/config/auth.php';
 
-$pageTitle = 'Research & News';
-$pageDescription = 'Explore the latest research, educational resources, news, and events from the Somali Cardiac Society.';
+$pageTitle = 'News & Events';
+$pageDescription = 'Stay updated with the latest news, announcements, seminars, workshops, and events from the Somali Cardiac Society.';
 
+$category = isset($_GET['category']) ? trim($_GET['category']) : null;
 $slug = isset($_GET['slug']) ? trim($_GET['slug']) : null;
 
 try {
     $db = getDB();
 
-    // Single content detail view
     if ($slug) {
         $stmt = $db->prepare("SELECT * FROM content WHERE slug = :slug AND is_published = 1 LIMIT 1");
         $stmt->execute([':slug' => $slug]);
         $article = $stmt->fetch();
         if (!$article) {
-            header('Location: content.php');
+            header('Location: news-events.php');
             exit;
         }
         $pageTitle = $article['title'];
     } else {
-        $stmt = $db->query("SELECT * FROM content WHERE is_published = 1 ORDER BY created_at DESC");
+        // Only include news and events category items
+        $stmt = $db->query("SELECT * FROM content WHERE is_published = 1 AND category IN ('news', 'events') ORDER BY created_at DESC");
         $allContent = $stmt->fetchAll();
     }
 } catch (Exception $ex) {
@@ -35,14 +36,14 @@ include __DIR__ . '/includes/header.php';
 ?>
 
 <?php if (isset($article) && $article): ?>
-<!-- Single Content Detail -->
+<!-- Single News/Event Detail -->
 <div class="page-header">
     <div class="container">
         <h1 style="font-size:1.8rem;max-width:700px;margin:0 auto;"><?php echo e($article['title']); ?></h1>
         <div class="breadcrumb">
             <a href="index.php">Home</a>
             <span>›</span>
-            <a href="content.php">Content</a>
+            <a href="news-events.php">News &amp; Events</a>
             <span>›</span>
             <span style="color:rgba(255,255,255,0.8);"><?php echo e(ucfirst($article['category'])); ?></span>
         </div>
@@ -69,7 +70,7 @@ include __DIR__ . '/includes/header.php';
                 <?php if ($article['event_date']): ?>
                 <span style="color:var(--primary-red);font-weight:600;">
                     <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-                    Event: <?php echo date('M d, Y', strtotime($article['event_date'])); ?>
+                    Event Date: <?php echo date('M d, Y', strtotime($article['event_date'])); ?>
                 </span>
                 <?php endif; ?>
             </div>
@@ -77,35 +78,33 @@ include __DIR__ . '/includes/header.php';
                 <?php echo nl2br(e($article['body'])); ?>
             </div>
             <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--border-color);">
-                <a href="content.php" class="btn btn-outline">← Back to All Content</a>
+                <a href="news-events.php" class="btn btn-outline">← Back to News &amp; Events</a>
             </div>
         </div>
     </div>
 </section>
 
 <?php else: ?>
-<!-- Content Listing -->
-<div class="page-header">
+<!-- News & Events Listing -->
+<div class="page-header" style="background: linear-gradient(135deg, rgba(0,27,46,0.9), rgba(0,40,69,0.92)), url('<?php echo SITE_URL; ?>/images/profile.jpeg') center/cover no-repeat;">
     <div class="container">
-        <h1>Research & Education · News & Events</h1>
-        <p>Explore our latest publications, clinical guidelines, society updates, and events</p>
+        <h1>News & Events</h1>
+        <p>Keep up with latest announcements, conferences, workshops, and society updates</p>
         <div class="breadcrumb">
             <a href="index.php">Home</a>
             <span>›</span>
-            <span style="color:rgba(255,255,255,0.8);">Content</span>
+            <span style="color:rgba(255,255,255,0.8);">News &amp; Events</span>
         </div>
     </div>
 </div>
 
 <section class="section">
     <div class="container">
-        <!-- Filter Tabs -->
+        <!-- Filter Tabs for News & Events -->
         <div class="filter-tabs fade-in">
-            <button class="filter-tab active" data-filter="all">All</button>
-            <button class="filter-tab" data-filter="research">Research</button>
-            <button class="filter-tab" data-filter="education">Education</button>
-            <button class="filter-tab" data-filter="news">News</button>
-            <button class="filter-tab" data-filter="events">Events</button>
+            <button class="filter-tab <?php echo (!$category || $category === 'all') ? 'active' : ''; ?>" data-filter="all">All</button>
+            <button class="filter-tab <?php echo ($category === 'news') ? 'active' : ''; ?>" data-filter="news">News</button>
+            <button class="filter-tab <?php echo ($category === 'events') ? 'active' : ''; ?>" data-filter="events">Events</button>
         </div>
 
         <?php if (!empty($allContent)): ?>
@@ -116,20 +115,7 @@ include __DIR__ . '/includes/header.php';
                     <img src="<?php echo UPLOADS_URL . '/' . e($item['feature_image']); ?>" alt="<?php echo e($item['title']); ?>" class="card-image">
                 <?php else: ?>
                     <div class="card-image" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary-blue-light),var(--bg-gray));">
-                        <?php
-                        $icons = [
-                            'research'    => '<svg width="36" height="36" fill="var(--primary-blue)" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>',
-                            'publication' => '<svg width="36" height="36" fill="var(--primary-blue)" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>',
-                            'education'   => '<svg width="36" height="36" fill="var(--primary-blue)" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>',
-                            'course'      => '<svg width="36" height="36" fill="var(--primary-blue)" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>',
-                            'seminar'     => '<svg width="36" height="36" fill="#8b5cf6" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>',
-                            'webinar'     => '<svg width="36" height="36" fill="#8b5cf6" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>',
-                            'workshop'    => '<svg width="36" height="36" fill="#b35a00" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>',
-                            'news'        => '<svg width="36" height="36" fill="var(--primary-red)" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>',
-                            'events'      => '<svg width="36" height="36" fill="var(--primary-red)" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>'
-                        ];
-                        echo $icons[$item['category']] ?? $icons['research'];
-                        ?>
+                        <svg width="36" height="36" fill="var(--primary-red)" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                     </div>
                 <?php endif; ?>
                 <div class="card-body">
@@ -139,12 +125,12 @@ include __DIR__ . '/includes/header.php';
                     <div class="card-meta">
                         <span>
                             <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                            <?php echo date('M d, Y', strtotime($article['created_at'] ?? $item['created_at'])); ?>
+                            <?php echo date('M d, Y', strtotime($item['created_at'])); ?>
                         </span>
                         <?php if ($item['event_date']): ?>
                         <span style="color:var(--primary-red);font-weight:600;">Event: <?php echo date('M d', strtotime($item['event_date'])); ?></span>
                         <?php endif; ?>
-                        <a href="content.php?slug=<?php echo e($item['slug']); ?>" style="color:var(--primary-blue);font-weight:600;margin-left:auto;">Read More →</a>
+                        <a href="news-events.php?slug=<?php echo e($item['slug']); ?>" style="color:var(--primary-blue);font-weight:600;margin-left:auto;">Read More →</a>
                     </div>
                 </div>
             </div>
@@ -152,9 +138,9 @@ include __DIR__ . '/includes/header.php';
         </div>
         <?php else: ?>
         <div style="text-align:center;padding:60px 20px;">
-            <svg width="60" height="60" fill="var(--primary-blue)" viewBox="0 0 24 24" style="margin-bottom:20px;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-            <h3 style="margin-bottom:8px;">Content Coming Soon</h3>
-            <p style="color:var(--text-light);">Our research papers, news, and events will be published here shortly.</p>
+            <svg width="60" height="60" fill="var(--primary-red)" viewBox="0 0 24 24" style="margin-bottom:20px;"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <h3 style="margin-bottom:8px;">News &amp; Events Coming Soon</h3>
+            <p style="color:var(--text-light);">Our news announcements and event schedules will be published here shortly.</p>
         </div>
         <?php endif; ?>
     </div>

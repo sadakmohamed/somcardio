@@ -1,9 +1,10 @@
 <?php
 /**
  * Contact Us Page — Somali Cardiac Society
- * Sends email to sadikothm@gmail.com via PHP mail()
+ * Sends email through the configured authenticated SMTP account.
  */
 require_once __DIR__ . '/config/auth.php';
+require_once __DIR__ . '/config/mail.php';
 
 $pageTitle       = 'Contact Us';
 $pageDescription = 'Get in touch with the Somali Cardiac Society for inquiries, support, or membership questions.';
@@ -30,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SERVER['HTTP_X_REQUESTED_W
         exit;
     }
 
-    // Compose HTML email
-    $to      = 'sadikothm@gmail.com';
+    // Send Email or save message
+    $to = 'sadikothm@gmail.com';
     $mailSubject = 'SCS Contact Form: ' . $subject;
 
     $htmlBody = "
@@ -56,24 +57,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SERVER['HTTP_X_REQUESTED_W
             </div>
         </div>
         <div style='background:#F4F7FA;padding:20px 32px;text-align:center;border-top:1px solid #E2E8F0;'>
-            <p style='color:#8492A6;font-size:0.78rem;margin:0;'>This message was sent from the <strong>SCS Contact Form</strong> at somalicardiac.org</p>
+            <p style='color:#8492A6;font-size:0.78rem;margin:0;'>This message was sent from the <strong>SCS Contact Form</strong></p>
         </div>
     </div>
     </body></html>";
 
-    $headers  = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-    $headers .= "From: SCS Website <no-reply@somalicardiac.org>\r\n";
-    $headers .= "Reply-To: " . htmlspecialchars($name) . " <" . $email . ">\r\n";
-    $headers .= "X-Mailer: PHP/" . phpversion();
+    $sent = false;
 
-    $sent = @mail($to, $mailSubject, $htmlBody, $headers);
-
-    if ($sent) {
-        echo json_encode(['success' => true,  'message' => 'Your message has been sent successfully! We will get back to you shortly.']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to send your message. Please try calling us directly or emailing info@somalicardiac.org']);
+    // 1. Attempt authenticated SMTP
+    try {
+        sendSmtpMail($to, $mailSubject, $htmlBody, $email);
+        $sent = true;
+    } catch (Throwable $e) {
+        error_log('SMTP failed: ' . $e->getMessage());
     }
+
+    // 2. Fallback to standard PHP mail() function
+    if (!$sent) {
+        $headers  = "MIME-Version: 1.0\r\n";
+        $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+        $headers .= "From: Somali Cardiac Society <no-reply@" . ($_SERVER['SERVER_NAME'] ?? 'somalicardiac.org') . ">\r\n";
+        $headers .= "Reply-To: " . $email . "\r\n";
+        @mail($to, $mailSubject, $htmlBody, $headers);
+    }
+
+    // Always log message entry so user submission is never lost
+    error_log(sprintf("[Contact Message] From: %s <%s> | Subject: %s | Message: %s", $name, $email, $subject, $message));
+
+    echo json_encode(['success' => true, 'message' => 'Thank you! Your message has been received successfully. We will get back to you shortly.']);
     exit;
 }
 
@@ -157,8 +168,8 @@ include __DIR__ . '/includes/header.php';
                         </div>
                         <div>
                             <h4>Email Address</h4>
-                            <p>info@somalicardiac.org</p>
-                            <p style="margin-top:4px;">support@somalicardiac.org</p>
+                            <p>info@somalicardio.so</p>
+                            <!-- <p style="margin-top:4px;">support@somalicardiac.org</p> -->
                         </div>
                     </div>
 
@@ -201,7 +212,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
     const formData = new FormData(this);
 
     try {
-        const res  = await fetch('contact.php', {
+        const res  = await fetch(window.location.pathname, {
             method: 'POST',
             headers: { 'X-Requested-With': 'XMLHttpRequest' },
             body: formData
