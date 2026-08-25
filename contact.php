@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_SERVER['HTTP_X_REQUESTED_W
     }
 
     // Send Email or save message
-    $to = 'sadikothm@gmail.com';
+    $to = 'info@somcardio.so';
     $mailSubject = 'SCS Contact Form: ' . $subject;
 
     $htmlBody = "
