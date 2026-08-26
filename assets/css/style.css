@@ -466,6 +466,7 @@ ul, ol { list-style: none; }
     background: var(--bg-white); border-radius: var(--radius-lg);
     border: 1px solid var(--border-color); padding: 36px 24px;
     text-align: center; transition: var(--transition); position: relative; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center;
 }
 .member-card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
@@ -491,7 +492,40 @@ ul, ol { list-style: none; }
     font-size: 0.78rem; font-weight: 600; margin-bottom: 12px;
 }
 .member-hospital { font-size: 0.85rem; color: var(--text-light); margin-bottom: 12px; }
-.member-bio { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+.member-bio-block { width: 100%; margin-top: auto; padding-top: 20px; text-align: left; border-top: 1px solid var(--border-color); }
+.member-bio-label { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; color: var(--primary-blue-dark); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; }
+.member-bio-label::before { content: ''; width: 18px; height: 3px; border-radius: 3px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-red)); }
+.member-bio-preview { display: -webkit-box; overflow: hidden; color: var(--text-secondary); font-size: 0.87rem; line-height: 1.7; line-clamp: 3; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.member-profile-button { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; padding: 0; border: 0; background: transparent; color: var(--primary-blue-dark); cursor: pointer; font-family: inherit; font-size: .8rem; font-weight: 800; transition: var(--transition); }
+.member-profile-button:hover { color: var(--primary-red); gap: 10px; }
+.member-profile-popup { width: min(620px, calc(100% - 24px)) !important; max-height: calc(100dvh - var(--nav-height) - 24px); margin: calc(var(--nav-height) + 8px) auto 0 !important; overflow: hidden !important; padding: 20px 28px 24px !important; border-radius: var(--radius-xl) !important; }
+.member-profile-popup .swal2-image { width: 128px; height: 128px; margin: 0 auto 14px; border: 5px solid var(--primary-blue-light); border-radius: 50%; object-fit: cover; box-shadow: var(--shadow-blue); }
+.member-profile-popup .swal2-title { margin: 0 0 4px; color: var(--text-primary); font-size: 1.45rem; line-height: 1.25; }
+.member-profile-popup .swal2-html-container { overflow-y: auto; max-height: min(430px, calc(100dvh - 300px)); margin: 0 !important; padding: 0 4px 4px !important; scrollbar-width: thin; }
+.member-profile-popup .swal2-actions { margin: 18px 0 0; }
+.member-profile-popup .swal2-confirm { min-width: 110px; border-radius: var(--radius-sm) !important; font-weight: 700; }
+.member-profile-alert { text-align: left; }
+.member-profile-specialization { margin-bottom: 18px; color: var(--primary-blue-dark); font-size: .9rem; font-weight: 800; text-align: center; }
+.member-profile-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 22px; }
+.member-profile-facts span { padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--bg-gray); color: var(--text-secondary); font-size: .82rem; line-height: 1.4; }
+.member-profile-facts strong { color: var(--text-primary); }
+.member-profile-bio { padding-top: 18px; border-top: 1px solid var(--border-color); }
+.member-profile-bio > span { display: block; margin-bottom: 8px; color: var(--text-primary); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.member-profile-bio p { color: var(--text-secondary); font-size: .92rem; line-height: 1.75; }
+
+@media (max-width: 576px) {
+    .member-profile-popup { width: calc(100% - 20px) !important; max-height: calc(100dvh - var(--nav-height) - 16px); margin: calc(var(--nav-height) + 4px) auto 0 !important; padding: 14px 16px 16px !important; border-radius: 18px !important; }
+    .member-profile-popup .swal2-image { width: 92px; height: 92px; margin-bottom: 10px; border-width: 4px; border-radius: 50%; object-fit: cover; }
+    .member-profile-popup .swal2-title { font-size: 1.15rem; }
+    .member-profile-popup .swal2-html-container { max-height: calc(100dvh - var(--nav-height) - 245px); }
+    .member-profile-specialization { margin-bottom: 12px; font-size: .82rem; }
+    .member-profile-facts { gap: 7px; margin-bottom: 16px; }
+    .member-profile-facts span { padding: 9px; font-size: .75rem; }
+    .member-profile-bio { padding-top: 14px; }
+    .member-profile-bio p { font-size: .85rem; line-height: 1.6; }
+    .member-profile-popup .swal2-actions { margin-top: 12px; }
+    .member-profile-popup .swal2-confirm { width: 100%; margin: 0; }
+}
 
 /* ==========================================
    Page Headers (smaller)

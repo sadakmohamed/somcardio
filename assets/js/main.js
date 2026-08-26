@@ -60,6 +60,34 @@ document.addEventListener('DOMContentLoaded', () => {
         dropdown.addEventListener('focusout', closeDropdown);
     });
 
+    // Show the complete member profile without expanding the card grid.
+    document.querySelectorAll('.member-profile-button').forEach(button => {
+        button.addEventListener('click', () => {
+            const member = JSON.parse(button.dataset.member);
+            const escapeHtml = value => String(value || '').replace(/[&<>'"]/g, character => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;'
+            }[character]));
+
+            Swal.fire({
+                imageUrl: member.image,
+                imageAlt: member.name,
+                title: escapeHtml(member.name),
+                html: `<div class="member-profile-alert">
+                    <p class="member-profile-specialization">${escapeHtml(member.specialization)}</p>
+                    <div class="member-profile-facts">
+                        <span><strong>${escapeHtml(member.experience)}</strong></span>
+                        <span>${escapeHtml(member.hospital)}</span>
+                    </div>
+                    <div class="member-profile-bio"><span>Biography</span><p>${escapeHtml(member.bio)}</p></div>
+                </div>`,
+                confirmButtonText: 'Close',
+                confirmButtonColor: '#27AAE1',
+                width: 'min(620px, calc(100% - 32px))',
+                customClass: { popup: 'member-profile-popup' }
+            });
+        });
+    });
+
     // ========== Navbar Scroll Effect ==========
     const navbar = document.querySelector('.navbar');
     if (navbar) {

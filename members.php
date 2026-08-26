@@ -60,7 +60,23 @@ include __DIR__ . '/includes/header.php';
                     <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     <?php echo e($member['hospital']); ?>
                 </p>
-                <p class="member-bio"><?php echo e(substr($member['bio'] ?? '', 0, 150)); ?>...</p>
+                <?php if (!empty($member['bio'])): ?>
+                <div class="member-bio-block">
+                    <span class="member-bio-label">Short Biography</span>
+                    <p class="member-bio-preview"><?php echo e($member['bio']); ?></p>
+                    <button type="button" class="member-profile-button" data-member='<?php echo e(json_encode([
+                        'name' => $member['full_name'],
+                        'specialization' => $member['specialization'],
+                        'experience' => $member['experience_years'] . '+ Years Experience',
+                        'hospital' => $member['hospital'],
+                        'bio' => $member['bio'],
+                        'image' => $member['photo'] ? UPLOADS_URL . '/' . $member['photo'] : SITE_URL . '/images/profile.jpeg'
+                    ], JSON_UNESCAPED_SLASHES)); ?>'>
+                        View Full Profile
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </button>
+                </div>
+                <?php endif; ?>
             </div>
             <?php endforeach; ?>
         </div>
