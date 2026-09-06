@@ -23,8 +23,8 @@ try {
         }
         $pageTitle = $article['title'];
     } else {
-        // Only include news and events category items
-        $stmt = $db->query("SELECT * FROM content WHERE is_published = 1 AND category IN ('news', 'events') ORDER BY created_at DESC");
+        // Sort by event_date when present, otherwise created_at DESC (latest first)
+        $stmt = $db->query("SELECT * FROM content WHERE is_published = 1 AND category IN ('news', 'events', 'workshop', 'seminar', 'webinar') ORDER BY COALESCE(event_date, created_at) DESC");
         $allContent = $stmt->fetchAll();
     }
 } catch (Exception $ex) {
@@ -57,25 +57,28 @@ include __DIR__ . '/includes/header.php';
             <?php endif; ?>
             <div class="meta">
                 <span class="card-badge badge-<?php echo e($article['category']); ?>"><?php echo e(ucfirst($article['category'])); ?></span>
+                
+                <?php if ($article['event_date']): ?>
+                <span style="color:var(--primary-red);font-weight:600;">
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+                    Event Date: <?php echo date('M d, Y', strtotime($article['event_date'])); ?>
+                </span>
+                <?php else: ?>
                 <span>
                     <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
                     <?php echo date('F d, Y', strtotime($article['created_at'])); ?>
                 </span>
+                <?php endif; ?>
+
                 <?php if ($article['author']): ?>
                 <span>
                     <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                     <?php echo e($article['author']); ?>
                 </span>
                 <?php endif; ?>
-                <?php if ($article['event_date']): ?>
-                <span style="color:var(--primary-red);font-weight:600;">
-                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
-                    Event Date: <?php echo date('M d, Y', strtotime($article['event_date'])); ?>
-                </span>
-                <?php endif; ?>
             </div>
             <div class="body">
-                <?php echo nl2br(e($article['body'])); ?>
+                <?php echo $article['body']; ?>
             </div>
             <div style="margin-top:40px;padding-top:24px;border-top:1px solid var(--border-color);">
                 <a href="news-events.php" class="btn btn-outline">← Back to News &amp; Events</a>
@@ -121,15 +124,16 @@ include __DIR__ . '/includes/header.php';
                 <div class="card-body">
                     <span class="card-badge badge-<?php echo e($item['category']); ?>"><?php echo e(ucfirst($item['category'])); ?></span>
                     <h3 class="card-title"><?php echo e($item['title']); ?></h3>
-                    <p class="card-text"><?php echo e(substr($item['summary'] ?? '', 0, 140)); ?>...</p>
-                    <div class="card-meta">
+                    <div class="card-text" style="line-height:1.5;color:var(--text-secondary);"><?php echo strip_tags($item['summary'] ?? ''); ?></div>
+                    <div class="card-meta" style="margin-top:auto;">
                         <span>
                             <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                            <?php echo date('M d, Y', strtotime($item['created_at'])); ?>
+                            <?php if ($item['event_date']): ?>
+                                <strong style="color:var(--primary-red);"><?php echo date('M d, Y', strtotime($item['event_date'])); ?></strong>
+                            <?php else: ?>
+                                <?php echo date('M d, Y', strtotime($item['created_at'])); ?>
+                            <?php endif; ?>
                         </span>
-                        <?php if ($item['event_date']): ?>
-                        <span style="color:var(--primary-red);font-weight:600;">Event: <?php echo date('M d', strtotime($item['event_date'])); ?></span>
-                        <?php endif; ?>
                         <a href="news-events.php?slug=<?php echo e($item['slug']); ?>" style="color:var(--primary-blue);font-weight:600;margin-left:auto;">Read More →</a>
                     </div>
                 </div>

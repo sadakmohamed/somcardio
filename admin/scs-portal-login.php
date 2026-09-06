@@ -5,7 +5,7 @@
 require_once __DIR__ . '/../config/auth.php';
 
 if (isLoggedIn()) {
-    header('Location: ' . SITE_URL . '/admin/dashboard.php');
+    header('Location: ' . SITE_URL . '/admin/dashboard');
     exit;
 }
 
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $admin = authenticateAdmin($username, $password);
             if ($admin) {
-                header('Location: ' . SITE_URL . '/admin/dashboard.php');
+                header('Location: ' . SITE_URL . '/admin/dashboard');
                 exit;
             } else {
                 $error = 'Invalid username or password, or account deactivated.';
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     <?php endif; ?>
 
-    <form action="scs-portal-login.php" method="POST">
+    <form action="<?php echo SITE_URL; ?>/admin/scs-portal-login" method="POST">
         <?php echo csrfField(); ?>
 
         <div style="margin-bottom:18px;">

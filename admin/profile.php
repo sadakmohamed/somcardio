@@ -17,12 +17,12 @@ try {
     $adminUser = $stmt->fetch();
     if (!$adminUser) {
         setFlash('error', 'Account not found.');
-        header('Location: logout.php');
+        header('Location: ' . SITE_URL . '/admin/logout');
         exit;
     }
 } catch (Exception $ex) {
     setFlash('error', 'Failed to retrieve profile.');
-    header('Location: dashboard.php');
+    header('Location: ' . SITE_URL . '/admin/dashboard');
     exit;
 }
 
@@ -130,7 +130,7 @@ startAdminLayout('My Settings');
             <h2>Personal Profile</h2>
         </div>
         <div class="card-body">
-            <form action="profile.php" method="POST" class="admin-form">
+            <form action="<?php echo SITE_URL; ?>/admin/profile" method="POST" class="admin-form">
                 <?php echo csrfField(); ?>
                 <input type="hidden" name="form_type" value="profile">
 
@@ -164,7 +164,7 @@ startAdminLayout('My Settings');
             <h2>Security &amp; Password</h2>
         </div>
         <div class="card-body">
-            <form action="profile.php" method="POST" class="admin-form">
+            <form action="<?php echo SITE_URL; ?>/admin/profile" method="POST" class="admin-form">
                 <?php echo csrfField(); ?>
                 <input type="hidden" name="form_type" value="password">
 

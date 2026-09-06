@@ -37,7 +37,7 @@ include __DIR__ . '/includes/header.php';
         <?php if (!empty($members)): ?>
         <div class="section-header fade-in">
             <h2>Our Leadership</h2>
-            <p><!--<?php echo count($members); ?>-->The Executive Council provides strategic leadership, professional oversight and institutional direction in support of the Society’s mission to advance cardiovascular health in Somalia</p>
+            <p>The Executive Council provides strategic leadership, professional oversight and institutional direction in support of the Society’s mission to advance cardiovascular health in Somalia</p>
             <div class="section-line"></div>
         </div>
         <div class="members-grid">
@@ -52,25 +52,30 @@ include __DIR__ . '/includes/header.php';
                 </div>
                 <h3 class="member-name"><?php echo e($member['full_name']); ?></h3>
                 <p class="member-spec"><?php echo e($member['specialization']); ?></p>
+
+                <?php if (!empty($member['experience_years']) && (int)$member['experience_years'] > 0): ?>
                 <div class="member-exp">
                     <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
                     <?php echo e($member['experience_years']); ?>+ Years Experience
                 </div>
+                <?php endif; ?>
+
                 <p class="member-hospital">
                     <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:4px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     <?php echo e($member['hospital']); ?>
                 </p>
+
                 <?php if (!empty($member['bio'])): ?>
                 <div class="member-bio-block">
                     <span class="member-bio-label">Short Biography</span>
-                    <p class="member-bio-preview"><?php echo e($member['bio']); ?></p>
+                    <div class="member-bio-preview"><?php echo $member['bio']; ?></div>
                     <button type="button" class="member-profile-button" data-member='<?php echo e(json_encode([
-                        'name' => $member['full_name'],
+                        'name'           => $member['full_name'],
                         'specialization' => $member['specialization'],
-                        'experience' => $member['experience_years'] . '+ Years Experience',
-                        'hospital' => $member['hospital'],
-                        'bio' => $member['bio'],
-                        'image' => $member['photo'] ? UPLOADS_URL . '/' . $member['photo'] : SITE_URL . '/images/profile.jpeg'
+                        'experience'     => (!empty($member['experience_years']) && (int)$member['experience_years'] > 0) ? ($member['experience_years'] . '+ Years Experience') : null,
+                        'hospital'       => $member['hospital'],
+                        'bio'            => $member['bio'],
+                        'image'          => $member['photo'] ? UPLOADS_URL . '/' . $member['photo'] : SITE_URL . '/images/profile.jpeg'
                     ], JSON_UNESCAPED_SLASHES)); ?>'>
                         View Full Profile
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>

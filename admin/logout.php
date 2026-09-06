@@ -18,5 +18,5 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect to hidden portal login
-header('Location: ' . SITE_URL . '/admin/scs-portal-login.php');
+header('Location: ' . SITE_URL . '/admin/scs-portal-login');
 exit;

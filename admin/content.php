@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $csrfToken = $_POST['csrf_token'] ?? '';
     if (!validateCSRFToken($csrfToken)) {
         setFlash('error', 'Invalid security token.');
-        header('Location: content.php');
+        header('Location: ' . SITE_URL . '/admin/content');
         exit;
     }
 
@@ -56,11 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Feature Image upload
             $imagePath = $_POST['existing_image'] ?? null;
             if (isset($_FILES['feature_image']) && $_FILES['feature_image']['error'] === UPLOAD_ERR_OK) {
-                // Delete existing photo if editing
                 if ($action === 'edit' && $imagePath) {
                     deleteUploadedFile($imagePath);
                 }
-                
                 $uploaded = handleImageUpload($_FILES['feature_image'], 'content');
                 if ($uploaded) {
                     $imagePath = $uploaded;
@@ -74,34 +72,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($action === 'add') {
                         $stmt = $db->prepare("INSERT INTO content (title, slug, category, summary, body, feature_image, event_date, author, is_published) VALUES (:title, :slug, :category, :summary, :body, :feature_image, :event_date, :author, :is_published)");
                         $stmt->execute([
-                            ':title' => $title,
-                            ':slug' => $slug,
-                            ':category' => $category,
-                            ':summary' => $summary,
-                            ':body' => $body,
+                            ':title'         => $title,
+                            ':slug'          => $slug,
+                            ':category'      => $category,
+                            ':summary'       => $summary,
+                            ':body'          => $body,
                             ':feature_image' => $imagePath,
-                            ':event_date' => $eventDate,
-                            ':author' => $author,
-                            ':is_published' => $isPublished
+                            ':event_date'    => $eventDate,
+                            ':author'        => $author,
+                            ':is_published'  => $isPublished
                         ]);
                         setFlash('success', 'Content added successfully.');
                     } else {
                         $stmt = $db->prepare("UPDATE content SET title = :title, slug = :slug, category = :category, summary = :summary, body = :body, feature_image = :feature_image, event_date = :event_date, author = :author, is_published = :is_published WHERE id = :id");
                         $stmt->execute([
-                            ':title' => $title,
-                            ':slug' => $slug,
-                            ':category' => $category,
-                            ':summary' => $summary,
-                            ':body' => $body,
+                            ':title'         => $title,
+                            ':slug'          => $slug,
+                            ':category'      => $category,
+                            ':summary'       => $summary,
+                            ':body'          => $body,
                             ':feature_image' => $imagePath,
-                            ':event_date' => $eventDate,
-                            ':author' => $author,
-                            ':is_published' => $isPublished,
-                            ':id' => $id
+                            ':event_date'    => $eventDate,
+                            ':author'        => $author,
+                            ':is_published'  => $isPublished,
+                            ':id'            => $id
                         ]);
                         setFlash('success', 'Content updated successfully.');
                     }
-                    header('Location: content.php');
+                    header('Location: ' . SITE_URL . '/admin/content');
                     exit;
                 } catch (Exception $ex) {
                     $error = 'Database error: ' . $ex->getMessage();
@@ -114,13 +112,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Handle Delete
 if ($action === 'delete' && $id > 0) {
     try {
-        // Fetch current photo to delete from disk
         $stmt = $db->prepare("SELECT feature_image FROM content WHERE id = :id");
         $stmt->execute([':id' => $id]);
         $image = $stmt->fetchColumn();
-        if ($image) {
-            deleteUploadedFile($image);
-        }
+        if ($image) deleteUploadedFile($image);
 
         $stmt = $db->prepare("DELETE FROM content WHERE id = :id");
         $stmt->execute([':id' => $id]);
@@ -128,7 +123,7 @@ if ($action === 'delete' && $id > 0) {
     } catch (Exception $ex) {
         setFlash('error', 'Failed to delete content.');
     }
-    header('Location: content.php');
+    header('Location: ' . SITE_URL . '/admin/content');
     exit;
 }
 
@@ -141,7 +136,7 @@ if ($action === 'add' || $action === 'edit') {
         $content = $stmt->fetch();
         if (!$content) {
             setFlash('error', 'Content not found.');
-            header('Location: content.php');
+            header('Location: ' . SITE_URL . '/admin/content');
             exit;
         }
     }
@@ -153,7 +148,7 @@ if ($action === 'add' || $action === 'edit') {
             <h1><?php echo $action === 'add' ? 'Create Content Item' : 'Edit Content Details'; ?></h1>
             <p style="color: var(--text-secondary); font-size: 0.9rem;">Publish research, updates, news, or upcoming events.</p>
         </div>
-        <a href="content.php" class="btn-admin btn-admin-secondary">Back to List</a>
+        <a href="<?php echo SITE_URL; ?>/admin/content" class="btn-admin btn-admin-secondary">Back to List</a>
     </div>
 
     <?php if ($error): ?>
@@ -162,7 +157,7 @@ if ($action === 'add' || $action === 'edit') {
 
     <div class="admin-card">
         <div class="card-body">
-            <form action="content.php?action=<?php echo $action; ?>&id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data" class="admin-form">
+            <form action="<?php echo SITE_URL; ?>/admin/content?action=<?php echo $action; ?>&id=<?php echo $id; ?>" method="POST" enctype="multipart/form-data" class="admin-form">
                 <?php echo csrfField(); ?>
                 <?php if ($action === 'edit'): ?>
                     <input type="hidden" name="existing_image" value="<?php echo htmlspecialchars($content['feature_image'] ?? ''); ?>">
@@ -201,7 +196,7 @@ if ($action === 'add' || $action === 'edit') {
                     </div>
 
                     <div class="form-group">
-                        <label for="event_date">Event Date (Events only)</label>
+                        <label for="event_date">Event Date (Events/Workshops/Conferences)</label>
                         <input type="date" id="event_date" name="event_date" value="<?php echo htmlspecialchars($content['event_date'] ?? ''); ?>">
                     </div>
 
@@ -215,32 +210,38 @@ if ($action === 'add' || $action === 'edit') {
                     <div class="form-group full-width">
                         <label for="feature_image">Featured Image</label>
                         <div class="file-upload-preview">
-                            <div class="image-preview-box" style="width: 120px; height: 80px;">
+                            <div class="image-preview-box" style="width: 140px; height: 85px;">
                                 <img id="imagePreview" src="<?php echo $content['feature_image'] ? UPLOADS_URL . '/' . htmlspecialchars($content['feature_image']) : ''; ?>" alt="Preview" style="<?php echo $content['feature_image'] ? '' : 'display:none;'; ?>">
                                 <?php if (!$content['feature_image']): ?>
                                     <span style="font-size: 1.5rem; color: var(--text-light);">🖼️</span>
                                 <?php endif; ?>
                             </div>
                             <div>
-                                <input type="file" id="feature_image" name="feature_image" class="image-upload-input" data-preview="imagePreview" accept="image/*">
-                                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Recommended: 16:9 ratio. Max file size: 5MB.</p>
+                                <input type="file" id="feature_image" name="feature_image" class="image-upload-input" data-preview="imagePreview" data-crop-ratio="1.77777777778" accept="image/*">
+                                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Landscape crop (16:9). Max 5MB. Use the crop tool to select the best portion.</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="summary">Excerpt / Summary *</label>
-                        <textarea id="summary" name="summary" rows="3" required placeholder="Provide a brief summary for grid views..."><?php echo htmlspecialchars($content['summary'] ?? ''); ?></textarea>
+                        <label>Excerpt / Summary *</label>
+                        <!-- Quill editor visible container -->
+                        <div id="summaryEditor" data-placeholder="Provide a brief summary for grid and card views..." style="min-height:90px;background:#fff;"></div>
+                        <!-- Hidden textarea that gets submitted -->
+                        <textarea id="summary" name="summary" style="display:none;"><?php echo htmlspecialchars($content['summary'] ?? ''); ?></textarea>
                     </div>
 
                     <div class="form-group full-width">
-                        <label for="body">Content Body *</label>
-                        <textarea id="body" name="body" rows="12" required placeholder="Write the main content/article here..."><?php echo htmlspecialchars($content['body'] ?? ''); ?></textarea>
+                        <label>Content Body *</label>
+                        <!-- Quill editor visible container -->
+                        <div id="bodyEditor" data-placeholder="Write the full content, article or details here..." style="min-height:260px;background:#fff;"></div>
+                        <!-- Hidden textarea that gets submitted -->
+                        <textarea id="body" name="body" style="display:none;"><?php echo htmlspecialchars($content['body'] ?? ''); ?></textarea>
                     </div>
                 </div>
 
                 <div class="form-actions">
-                    <a href="content.php" class="btn-admin btn-admin-secondary">Cancel</a>
+                    <a href="<?php echo SITE_URL; ?>/admin/content" class="btn-admin btn-admin-secondary">Cancel</a>
                     <button type="submit" class="btn-admin btn-admin-primary">Save Content</button>
                 </div>
             </form>
@@ -251,7 +252,7 @@ if ($action === 'add' || $action === 'edit') {
 } else {
     // List View
     try {
-        $stmt = $db->query("SELECT * FROM content ORDER BY created_at DESC");
+        $stmt = $db->query("SELECT * FROM content ORDER BY COALESCE(event_date, created_at) DESC");
         $contentList = $stmt->fetchAll();
     } catch (Exception $ex) {
         $contentList = [];
@@ -264,7 +265,7 @@ if ($action === 'add' || $action === 'edit') {
             <h1>Manage Website Content</h1>
             <p style="color: var(--text-secondary); font-size: 0.9rem;">Add, edit, or delete published papers, guidelines, news, and events.</p>
         </div>
-        <a href="content.php?action=add" class="btn-admin btn-admin-primary">Create Content Item</a>
+        <a href="<?php echo SITE_URL; ?>/admin/content?action=add" class="btn-admin btn-admin-primary">Create Content Item</a>
     </div>
 
     <!-- Search Card -->
@@ -285,7 +286,7 @@ if ($action === 'add' || $action === 'edit') {
                             <th>Author</th>
                             <th>Event Date</th>
                             <th>Published</th>
-                            <th>Created At</th>
+                            <th>Date</th>
                             <th style="text-align: right;">Actions</th>
                         </tr>
                     </thead>
@@ -309,12 +310,12 @@ if ($action === 'add' || $action === 'edit') {
                                         <?php echo $item['is_published'] ? 'Published' : 'Draft'; ?>
                                     </span>
                                 </td>
-                                <td><?php echo date('M d, Y', strtotime($item['created_at'])); ?></td>
+                                <td><?php echo $item['event_date'] ? date('M d, Y', strtotime($item['event_date'])) : date('M d, Y', strtotime($item['created_at'])); ?></td>
                                 <td style="text-align: right;">
-                                    <a href="content.php?action=edit&id=<?php echo $item['id']; ?>" class="btn-icon" title="Edit Content">
+                                    <a href="<?php echo SITE_URL; ?>/admin/content?action=edit&id=<?php echo $item['id']; ?>" class="btn-icon" title="Edit Content">
                                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                     </a>
-                                    <a href="content.php?action=delete&id=<?php echo $item['id']; ?>" class="btn-icon btn-icon-danger confirm-delete" data-item="content item" title="Delete Content">
+                                    <a href="<?php echo SITE_URL; ?>/admin/content?action=delete&id=<?php echo $item['id']; ?>" class="btn-icon btn-icon-danger confirm-delete" data-item="content item" title="Delete Content">
                                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                     </a>
                                 </td>

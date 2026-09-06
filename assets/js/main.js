@@ -68,6 +68,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#039;', '"': '&quot;'
             }[character]));
 
+            const expHtml = member.experience ? `<span><strong>${escapeHtml(member.experience)}</strong></span>` : '';
+            
+            // Render rich bio cleanly without displaying raw HTML tags
+            let bioContent = member.bio || '';
+            // If bioContent has escaped tags like &lt;p&gt;, unescape them
+            if (bioContent.includes('&lt;') && bioContent.includes('&gt;')) {
+                const txt = document.createElement('textarea');
+                txt.innerHTML = bioContent;
+                bioContent = txt.value;
+            }
+
             Swal.fire({
                 imageUrl: member.image,
                 imageAlt: member.name,
@@ -75,10 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 html: `<div class="member-profile-alert">
                     <p class="member-profile-specialization">${escapeHtml(member.specialization)}</p>
                     <div class="member-profile-facts">
-                        <span><strong>${escapeHtml(member.experience)}</strong></span>
+                        ${expHtml}
                         <span>${escapeHtml(member.hospital)}</span>
                     </div>
-                    <div class="member-profile-bio"><span>Biography</span><p>${escapeHtml(member.bio)}</p></div>
+                    <div class="member-profile-bio">
+                        <span>Biography</span>
+                        <div class="member-profile-bio-content" style="text-align:left;line-height:1.6;margin-top:8px;color:var(--text-secondary);font-size:0.92rem;">${bioContent}</div>
+                    </div>
                 </div>`,
                 confirmButtonText: 'Close',
                 confirmButtonColor: '#27AAE1',

@@ -28,7 +28,7 @@ startAdminLayout('Dashboard');
         <p>Here's what's happening with the Somali Cardiac Society platform today.</p>
     </div>
     <div class="page-title-actions">
-        <a href="content.php" class="btn-admin btn-admin-primary">
+        <a href="<?php echo SITE_URL; ?>/admin/content" class="btn-admin btn-admin-primary">
             <i class="ph ph-plus" style="font-size:1rem;"></i> New Content
         </a>
     </div>
@@ -96,7 +96,7 @@ startAdminLayout('Dashboard');
     <div class="admin-card">
         <div class="card-header">
             <h2>Recent Content Updates</h2>
-            <a href="content.php" class="btn-admin btn-admin-secondary btn-sm">View All</a>
+            <a href="<?php echo SITE_URL; ?>/admin/content" class="btn-admin btn-admin-secondary btn-sm">View All</a>
         </div>
         <div class="card-body" style="padding:0;">
             <div class="table-responsive">

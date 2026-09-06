@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $csrfToken = $_POST['csrf_token'] ?? '';
     if (!validateCSRFToken($csrfToken)) {
         setFlash('error', 'Invalid security token.');
-        header('Location: admins.php');
+        header('Location: ' . SITE_URL . '/admin/admins');
         exit;
     }
 
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         setFlash('success', 'Admin user updated successfully.');
                     }
-                    header('Location: admins.php');
+                    header('Location: ' . SITE_URL . '/admin/admins');
                     exit;
                 } catch (Exception $ex) {
                     $error = 'Database error: ' . $ex->getMessage();
@@ -118,7 +118,7 @@ if ($action === 'delete' && $id > 0) {
             setFlash('error', 'Failed to delete admin user.');
         }
     }
-    header('Location: admins.php');
+    header('Location: ' . SITE_URL . '/admin/admins');
     exit;
 }
 
@@ -131,7 +131,7 @@ if ($action === 'add' || $action === 'edit') {
         $adminUser = $stmt->fetch();
         if (!$adminUser) {
             setFlash('error', 'Admin user not found.');
-            header('Location: admins.php');
+            header('Location: ' . SITE_URL . '/admin/admins');
             exit;
         }
     }
@@ -143,7 +143,7 @@ if ($action === 'add' || $action === 'edit') {
             <h1><?php echo $action === 'add' ? 'Create Admin User' : 'Edit Admin User Details'; ?></h1>
             <p style="color: var(--text-secondary); font-size: 0.9rem;">Assign access levels and configure login credentials.</p>
         </div>
-        <a href="admins.php" class="btn-admin btn-admin-secondary">Back to List</a>
+        <a href="<?php echo SITE_URL; ?>/admin/admins" class="btn-admin btn-admin-secondary">Back to List</a>
     </div>
 
     <?php if ($error): ?>
@@ -152,7 +152,7 @@ if ($action === 'add' || $action === 'edit') {
 
     <div class="admin-card" style="max-width: 600px;">
         <div class="card-body">
-            <form action="admins.php?action=<?php echo $action; ?>&id=<?php echo $id; ?>" method="POST" class="admin-form">
+            <form action="<?php echo SITE_URL; ?>/admin/admins?action=<?php echo $action; ?>&id=<?php echo $id; ?>" method="POST" class="admin-form">
                 <?php echo csrfField(); ?>
 
                 <div class="form-grid" style="grid-template-columns: 1fr;">
@@ -198,7 +198,7 @@ if ($action === 'add' || $action === 'edit') {
                 </div>
 
                 <div class="form-actions">
-                    <a href="admins.php" class="btn-admin btn-admin-secondary">Cancel</a>
+                    <a href="<?php echo SITE_URL; ?>/admin/admins" class="btn-admin btn-admin-secondary">Cancel</a>
                     <button type="submit" class="btn-admin btn-admin-primary">Save Account</button>
                 </div>
             </form>
@@ -222,7 +222,7 @@ if ($action === 'add' || $action === 'edit') {
             <h1>Manage Admin Accounts</h1>
             <p style="color: var(--text-secondary); font-size: 0.9rem;">Exclusive Super Admin control over administrator access keys.</p>
         </div>
-        <a href="admins.php?action=add" class="btn-admin btn-admin-primary">Create Admin User</a>
+        <a href="<?php echo SITE_URL; ?>/admin/admins?action=add" class="btn-admin btn-admin-primary">Create Admin User</a>
     </div>
 
     <!-- Search Card -->
@@ -274,11 +274,11 @@ if ($action === 'add' || $action === 'edit') {
                                     </span>
                                 </td>
                                 <td style="text-align: right;">
-                                    <a href="admins.php?action=edit&id=<?php echo $usr['id']; ?>" class="btn-icon" title="Edit Admin Settings">
+                                    <a href="<?php echo SITE_URL; ?>/admin/admins?action=edit&id=<?php echo $usr['id']; ?>" class="btn-icon" title="Edit Admin Settings">
                                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                     </a>
                                     <?php if ($usr['id'] !== (int)$_SESSION['admin_id']): ?>
-                                        <a href="admins.php?action=delete&id=<?php echo $usr['id']; ?>" class="btn-icon btn-icon-danger confirm-delete" data-item="admin user" title="Delete Account">
+                                        <a href="<?php echo SITE_URL; ?>/admin/admins?action=delete&id=<?php echo $usr['id']; ?>" class="btn-icon btn-icon-danger confirm-delete" data-item="admin user" title="Delete Account">
                                             <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         </a>
                                     <?php else: ?>

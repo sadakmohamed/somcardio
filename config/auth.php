@@ -31,7 +31,7 @@ function isLoggedIn(): bool {
  */
 function requireLogin(): void {
     if (!isLoggedIn()) {
-        header('Location: ' . SITE_URL . '/admin/scs-portal-login.php');
+        header('Location: ' . SITE_URL . '/admin/scs-portal-login');
         exit;
     }
 }
@@ -50,7 +50,7 @@ function requireSuperAdmin(): void {
     requireLogin();
     if (!isSuperAdmin()) {
         $_SESSION['flash_error'] = 'Access denied. Super Admin privileges required.';
-        header('Location: ' . SITE_URL . '/admin/dashboard.php');
+        header('Location: ' . SITE_URL . '/admin/dashboard');
         exit;
     }
 }

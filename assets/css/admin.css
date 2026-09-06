@@ -618,3 +618,76 @@ input[type="checkbox"] {
 
     .admin-table th, .admin-table td { padding: 12px 14px; }
 }
+
+
+/* ─────────────────────────────────────────
+   QUILL RICH TEXT EDITOR & FORM ENHANCEMENTS
+───────────────────────────────────────── */
+.form-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.ql-toolbar.ql-snow {
+    border: 1.5px solid var(--border-color) !important;
+    border-top-left-radius: var(--radius-md) !important;
+    border-top-right-radius: var(--radius-md) !important;
+    background: #F8FAFC !important;
+    font-family: 'Inter', sans-serif !important;
+    padding: 8px 12px !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+.ql-container.ql-snow {
+    border: 1.5px solid var(--border-color) !important;
+    border-top: none !important;
+    border-bottom-left-radius: var(--radius-md) !important;
+    border-bottom-right-radius: var(--radius-md) !important;
+    background: #FFFFFF !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.92rem !important;
+    color: var(--text-primary) !important;
+    min-height: 120px !important;
+}
+
+.ql-editor {
+    min-height: 120px !important;
+    max-height: 480px !important;
+    overflow-y: auto !important;
+    font-size: 0.92rem !important;
+    line-height: 1.65 !important;
+    color: #0D1B2A !important;
+    padding: 14px 16px !important;
+}
+
+.ql-editor p {
+    margin-bottom: 8px;
+}
+
+.ql-editor.ql-blank::before {
+    color: #94A3B8 !important;
+    font-style: normal !important;
+    left: 16px !important;
+    right: 16px !important;
+}
+
+.form-actions {
+    margin-top: 36px !important;
+    padding-top: 20px !important;
+    border-top: 1px solid var(--border-color) !important;
+    display: flex !important;
+    gap: 14px !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+    position: relative !important;
+    z-index: 5 !important;
+}

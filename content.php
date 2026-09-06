@@ -23,7 +23,7 @@ try {
         }
         $pageTitle = $article['title'];
     } else {
-        $stmt = $db->query("SELECT * FROM content WHERE is_published = 1 ORDER BY created_at DESC");
+        $stmt = $db->query("SELECT * FROM content WHERE is_published = 1 ORDER BY COALESCE(event_date, created_at) DESC");
         $allContent = $stmt->fetchAll();
     }
 } catch (Exception $ex) {
