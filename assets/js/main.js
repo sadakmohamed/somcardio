@@ -158,42 +158,84 @@ document.addEventListener('DOMContentLoaded', () => {
         counters.forEach(el => countObserver.observe(el));
     }
 
-    // ========== Filter Tabs ==========
+        // ========== Filter Tabs ==========
     const filterTabs = document.querySelectorAll('.filter-tab');
     const filterItems = document.querySelectorAll('[data-category]');
     if (filterTabs.length && filterItems.length) {
         // Group sub-categories under main filter tabs
         const categoryMap = {
             'all': null,
-            'guidelines': ['guidelines', 'clinical guidelines'],
-            'research': ['research', 'publication'],
-            'education': ['education', 'course', 'seminar', 'webinar', 'workshop'],
+            'guidelines': ['guidelines', 'clinical guidelines', 'clinical-guidelines'],
+            'research': ['research', 'publication', 'publications', 'research & publications'],
+            'education': ['education', 'course', 'seminar', 'webinar', 'workshop', 'education & training'],
             'events': ['events', 'workshop', 'seminar', 'webinar'],
             'news': ['news']
+        };
+
+        const applyFilter = (filter, isInitial = false) => {
+            const allowedCategories = categoryMap[filter] || (filter === 'all' ? null : [filter]);
+
+            filterItems.forEach(item => {
+                const itemCat = (item.dataset.category || '').toLowerCase().trim();
+                const isMatch = (filter === 'all') || (allowedCategories && allowedCategories.includes(itemCat));
+
+                if (isMatch) {
+                    item.style.display = '';
+                    if (!isInitial) {
+                        setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 30);
+                    } else {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }
+                } else {
+                    if (!isInitial) {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => { item.style.display = 'none'; }, 250);
+                    } else {
+                        item.style.display = 'none';
+                        item.style.opacity = '0';
+                    }
+                }
+            });
         };
 
         filterTabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 filterTabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
-                const filter = tab.dataset.filter.toLowerCase();
-                const allowedCategories = categoryMap[filter] || [filter];
+                const filter = (tab.dataset.filter || 'all').toLowerCase();
+                applyFilter(filter, false);
 
-                filterItems.forEach(item => {
-                    const itemCat = (item.dataset.category || '').toLowerCase();
-                    const isMatch = (filter === 'all') || (allowedCategories && allowedCategories.includes(itemCat));
-
-                    if (isMatch) {
-                        item.style.display = '';
-                        setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 50);
-                    } else {
-                        item.style.opacity = '0';
-                        item.style.transform = 'translateY(20px)';
-                        setTimeout(() => { item.style.display = 'none'; }, 300);
-                    }
-                });
+                // Update URL query string without reloading page
+                const url = new URL(window.location.href);
+                if (filter === 'all') {
+                    url.searchParams.delete('category');
+                } else {
+                    url.searchParams.set('category', filter);
+                }
+                window.history.replaceState({}, '', url.toString());
             });
         });
+
+        // Auto-filter on page load based on active button or URL query parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlCategory = (urlParams.get('category') || '').toLowerCase().trim();
+        let targetTab = document.querySelector('.filter-tab.active');
+
+        if (urlCategory) {
+            const matchingTab = Array.from(filterTabs).find(t => (t.dataset.filter || '').toLowerCase().trim() === urlCategory);
+            if (matchingTab) {
+                filterTabs.forEach(t => t.classList.remove('active'));
+                matchingTab.classList.add('active');
+                targetTab = matchingTab;
+            }
+        }
+
+        if (targetTab) {
+            const initialFilter = (targetTab.dataset.filter || 'all').toLowerCase().trim();
+            applyFilter(initialFilter, true);
+        }
     }
 
     // Contact form validation is now handled via SweetAlert AJAX in contact.php

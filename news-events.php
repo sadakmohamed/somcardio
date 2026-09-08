@@ -110,10 +110,22 @@ include __DIR__ . '/includes/header.php';
             <button class="filter-tab <?php echo ($category === 'events') ? 'active' : ''; ?>" data-filter="events">Events</button>
         </div>
 
+        <?php
+        $categoryMap = [
+            'events' => ['events', 'workshop', 'seminar', 'webinar'],
+            'news'   => ['news']
+        ];
+        $selectedCat = strtolower($category ?? '');
+        $allowedCats = ($selectedCat && isset($categoryMap[$selectedCat])) ? $categoryMap[$selectedCat] : ($selectedCat && $selectedCat !== 'all' ? [$selectedCat] : null);
+        ?>
         <?php if (!empty($allContent)): ?>
         <div class="content-grid" style="grid-template-columns: repeat(2, 1fr);">
-            <?php foreach ($allContent as $item): ?>
-            <div class="card fade-in" data-category="<?php echo e($item['category']); ?>" style="transition: opacity 0.3s, transform 0.3s;">
+            <?php foreach ($allContent as $item): 
+                $itemCat = strtolower($item['category'] ?? '');
+                $isMatch = ($allowedCats === null) || in_array($itemCat, $allowedCats);
+                $initialStyle = $isMatch ? '' : 'display:none;';
+            ?>
+            <div class="card fade-in" data-category="<?php echo e($item['category']); ?>" style="<?php echo $initialStyle; ?>transition: opacity 0.3s, transform 0.3s;">
                 <?php if ($item['feature_image']): ?>
                     <img src="<?php echo UPLOADS_URL . '/' . e($item['feature_image']); ?>" alt="<?php echo e($item['title']); ?>" class="card-image">
                 <?php else: ?>

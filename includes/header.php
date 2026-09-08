@@ -13,7 +13,7 @@ $navDark = true; // Dark navbar header across all pages so mobile logo & hamburg
     <meta name="description" content="<?php echo isset($pageDescription) ? e($pageDescription) : 'Somali Cardiac Society — Advancing cardiovascular health care in Somalia through research, education, and clinical excellence.'; ?>">
     <title><?php echo isset($pageTitle) ? e($pageTitle) . ' — Somali Cardiac Society' : 'Somali Cardiac Society'; ?></title>
     <link rel="icon" type="image/png" href="<?php echo SITE_URL; ?>/images/logo-2.png">
-    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css?v=2.0">
+    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css?v=2.5">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
