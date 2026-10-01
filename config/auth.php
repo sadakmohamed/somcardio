@@ -147,14 +147,15 @@ function generateSlug(string $title): string {
  * Handle file upload (images)
  */
 function handleImageUpload(array $file, string $subfolder): string|false {
-    $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    $allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'];
     $maxSize = 5 * 1024 * 1024; // 5MB
     
     if ($file['error'] !== UPLOAD_ERR_OK) {
         return false;
     }
     
-    if (!in_array($file['type'], $allowed)) {
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (!in_array($file['type'], $allowed) && $extension !== 'pdf') {
         return false;
     }
     

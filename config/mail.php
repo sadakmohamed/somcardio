@@ -10,8 +10,9 @@ function sendSmtpMail(string $to, string $subject, string $htmlBody, string $rep
     $password = (string) env('SMTP_PASS', '');
     $encryption = strtolower((string) env('SMTP_ENCRYPTION', 'tls'));
 
-    if ($username === '' || $password === '') {
-        throw new RuntimeException('SMTP_USER and SMTP_PASS are not configured.');
+    $placeholderPassword = preg_match('/^(your_.*password_here|your_.*password|change_me|replace_me|placeholder)$/i', $password) === 1;
+    if ($username === '' || $password === '' || $placeholderPassword) {
+        throw new RuntimeException('SMTP credentials are missing or still set to placeholders. Configure SMTP_USER and SMTP_PASS.');
     }
 
     $scheme = $encryption === 'ssl' ? 'ssl://' : 'tcp://';
@@ -72,7 +73,8 @@ function smtpExpect($socket, int $expectedCode): void {
         $response .= $line;
     } while (isset($line[3]) && $line[3] === '-');
 
-    if ((int) substr($response, 0, 3) !== $expectedCode) {
-        throw new RuntimeException('SMTP server rejected the request.');
+    $actualCode = (int) substr($response, 0, 3);
+    if ($actualCode !== $expectedCode) {
+        throw new RuntimeException('SMTP server rejected the request with response code ' . $actualCode . '.');
     }
 }

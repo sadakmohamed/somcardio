@@ -50,15 +50,15 @@ AddDefaultCharset UTF-8
     # ── Block direct access to config/includes/database folders ───────────
     RewriteRule ^(config|includes|database)(/|$) - [F,L]
 
-    # ── Remove .php extension: redirect /page.php → /page ─────────────────
+    # ── Remove .php extension, including nested routes ─────────────────────
     # For local XAMPP (running under /ssc/)
-    RewriteCond %{THE_REQUEST} \s/ssc/([^/?\ ]+)\.php[\s?] [NC]
-    RewriteRule ^ /ssc/%1 [R=301,L]
+    RewriteCond %{THE_REQUEST} \s/+ssc/(.+)\.php(?:[?\s]) [NC]
+    RewriteRule ^(.+)\.php$ /ssc/$1 [R=301,L,NE]
 
     # For production (running at root /)
-    RewriteCond %{THE_REQUEST} \s/([^/?\ ]+)\.php[\s?] [NC]
-    RewriteCond %{THE_REQUEST} !\s/ssc/ [NC]
-    RewriteRule ^ /%1 [R=301,L]
+    RewriteCond %{THE_REQUEST} \s/([^?\ ]+)\.php(?:[?\s]) [NC]
+    RewriteCond %{THE_REQUEST} !\s/+ssc/ [NC]
+    RewriteRule ^(.+)\.php$ /$1 [R=301,L,NE]
 
     # ── Internally map extensionless URLs to .php files ───────────────────
     RewriteCond %{REQUEST_FILENAME} !-d

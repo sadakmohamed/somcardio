@@ -82,6 +82,44 @@ function startAdminLayout(string $title) {
                 </a>
                 <?php endif; ?>
 
+                <div class="sidebar-label">Conference</div>
+
+                <a href="<?php echo SITE_URL; ?>/admin/conference"
+                   class="<?php echo $currentAdminPage === 'conference.php' ? 'active' : ''; ?>">
+                    <i class="ph ph-presentation"></i>
+                    Conference Hub
+                </a>
+
+                <a href="<?php echo SITE_URL; ?>/admin/conference-ongoing"
+                   class="<?php echo $currentAdminPage === 'conference-ongoing.php' ? 'active' : ''; ?>">
+                    <i class="ph ph-calendar"></i>
+                    Ongoing Conference
+                </a>
+
+                <a href="<?php echo SITE_URL; ?>/admin/conference-speakers"
+                   class="<?php echo $currentAdminPage === 'conference-speakers.php' ? 'active' : ''; ?>">
+                    <i class="ph ph-microphone"></i>
+                    Speakers
+                </a>
+
+                <a href="<?php echo SITE_URL; ?>/admin/conference-abstracts"
+                   class="<?php echo $currentAdminPage === 'conference-abstracts.php' ? 'active' : ''; ?>">
+                    <i class="ph ph-file-text"></i>
+                    Abstracts
+                </a>
+
+                <a href="<?php echo SITE_URL; ?>/admin/conference-registration"
+                   class="<?php echo $currentAdminPage === 'conference-registration.php' ? 'active' : ''; ?>">
+                    <i class="ph ph-users"></i>
+                    Registrations
+                </a>
+
+                <a href="<?php echo SITE_URL; ?>/admin/conference-past"
+                   class="<?php echo $currentAdminPage === 'conference-past.php' ? 'active' : ''; ?>">
+                    <i class="ph ph-clock-clockwise"></i>
+                    Past Conferences
+                </a>
+
                 <div class="sidebar-label">Account</div>
 
                 <a href="<?php echo SITE_URL; ?>/admin/profile"
@@ -351,6 +389,28 @@ function endAdminLayout() {
         // Content: summary + body
         initQuill('summaryEditor', 'summary', toolbarMini);
         initQuill('bodyEditor', 'body', toolbarFull);
+
+        // Conference – Ongoing
+        initQuill('backgroundEditor',  'background_text', toolbarFull);
+        initQuill('headMessageEditor', 'head_message',    toolbarFull);
+        initQuill('objectivesEditor',  'objectives',      toolbarFull);
+
+        // Conference – Abstracts settings
+        initQuill('formatEditor',  'format_requirements', toolbarFull);
+        initQuill('structureEditor', 'structure',         toolbarFull);
+        initQuill('reviewEditor',  'review_process',      toolbarFull);
+
+        // Conference – Subtheme modal editor
+        initQuill('subthemeDetailEditor', 'subtheme_detail', toolbarMini);
+
+        // Conference – Evaluation criteria modal editor
+        initQuill('criteriaDetailEditor', 'criteria_detail', toolbarMini);
+
+        // Conference – Registration settings
+        initQuill('regProcessEditor', 'reg_process_text', toolbarFull);
+
+        // Past conference body editor
+        initQuill('pastBodyEditor', 'body', toolbarFull);
     })();
     </script>
     </body>
