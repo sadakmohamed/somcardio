@@ -39,7 +39,7 @@ $subNavItems = [
     ['Speakers',            'speakers'],
     ['Call for Abstracts',  'call-for-abstracts'],
     ['Registration',        'registration'],
-    ['Past Conferences',    'past'],
+    // ['Past Conferences',    'past'],
 ];
 ?>
 

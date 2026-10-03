@@ -145,23 +145,23 @@ require_once __DIR__ . '/../includes/header.php';
                 <div class="conf-selected-subtheme" id="selectedSubthemeSummary" hidden><i class="ph ph-check-circle" aria-hidden="true"></i><span>Selected scientific theme:</span><strong id="selectedSubthemeLabel"></strong><a href="#abstractSubthemeOptions">Change</a></div>
                 <div class="conf-abstract-form-grid">
                     <div class="form-group">
-                        <label for="abstractFullName">1 Full name <b>*</b></label>
+                        <label for="abstractFullName">Full name <b>*</b></label>
                         <input id="abstractFullName" type="text" name="full_name" placeholder="Name of the submitting/presenting author" autocomplete="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="abstractEmail">2 Email address <b>*</b></label>
+                        <label for="abstractEmail">Email address <b>*</b></label>
                         <input id="abstractEmail" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="abstractOrganization">3 Institution / Organization <b>*</b></label>
+                        <label for="abstractOrganization">Institution / Organization <b>*</b></label>
                         <input id="abstractOrganization" type="text" name="organization" placeholder="Hospital, university, or organization" autocomplete="organization" required>
                     </div>
                     <div class="form-group">
-                        <label for="abstractTitle">4 Abstract title <b>*</b></label>
+                        <label for="abstractTitle">Abstract title <b>*</b></label>
                         <input id="abstractTitle" type="text" name="title" placeholder="A concise title for your research" required>
                     </div>
                     <div class="form-group">
-                        <label for="abstractSubmissionType">5 Submission Type <b>*</b></label>
+                        <label for="abstractSubmissionType">Submission Type <b>*</b></label>
                         <select id="abstractSubmissionType" name="submission_type" required>
                             <option value="Original Research">Original Research</option>
                             <option value="Case Report or Case Series">Case Report or Case Series</option>
@@ -170,7 +170,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="selectedSubthemeId">6 Scientific Theme <b>*</b></label>
+                        <label for="selectedSubthemeId">Scientific Theme <b>*</b></label>
                         <select id="selectedSubthemeId" name="subtheme_id" required>
                             <option value="">-- Choose a scientific theme --</option>
                             <?php foreach ($subthemes as $theme): ?>
@@ -179,7 +179,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </select>
                     </div>
                     <div class="form-group conf-abstract-file-field" style="grid-column:1/-1;">
-                        <label for="abstractFile">7 Abstract PDF <b>*</b></label>
+                        <label for="abstractFile">Abstract PDF <b>*</b></label>
                         <input id="abstractFile" type="file" name="abstract_file" accept="application/pdf,.pdf" required>
                         <small>Upload the complete abstract in PDF format according to the submission guidelines.</small>
                     </div>
