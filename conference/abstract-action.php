@@ -27,10 +27,11 @@ $email = trim($_POST['email'] ?? '');
 $organization = trim($_POST['organization'] ?? '');
 $title = trim($_POST['title'] ?? '');
 $summary = trim($_POST['summary'] ?? '');
+$submissionType = trim($_POST['submission_type'] ?? 'Original Research');
 $subthemeId = filter_input(INPUT_POST, 'subtheme_id', FILTER_VALIDATE_INT) ?: null;
 $subthemeTitle = '';
 
-if ($fullName === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $title === '' || $summary === '') {
+if ($fullName === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || $title === '') {
     setFlash('error', 'Please fill in all required abstract fields.');
     header('Location: ' . SITE_URL . '/conference/call-for-abstracts');
     exit;
@@ -69,7 +70,7 @@ if ($abstractFile === null) {
     exit;
 }
 
-$stmt = $db->prepare("INSERT INTO conference_abstracts (conference_id, subtheme_id, subtheme_title, full_name, email, organization, title, summary, file_path, status) VALUES (:cid, :subtheme_id, :subtheme_title, :full_name, :email, :organization, :title, :summary, :file_path, 'pending')");
+$stmt = $db->prepare("INSERT INTO conference_abstracts (conference_id, subtheme_id, subtheme_title, full_name, email, organization, title, submission_type, summary, file_path, status) VALUES (:cid, :subtheme_id, :subtheme_title, :full_name, :email, :organization, :title, :submission_type, :summary, :file_path, 'pending')");
 try {
     $stmt->execute([
         ':cid' => $conf['id'],
@@ -79,6 +80,7 @@ try {
         ':email' => $email,
         ':organization' => $organization,
         ':title' => $title,
+        ':submission_type' => $submissionType,
         ':summary' => $summary,
         ':file_path' => $abstractFile,
     ]);
@@ -99,7 +101,8 @@ $htmlBody = '<!doctype html><html><body style="margin:0;background:#f2f6f8;font-
     . '<tr><td style="padding:10px 0;border-bottom:1px solid #e7edef;color:#738792;">Author</td><td style="padding:10px 0;border-bottom:1px solid #e7edef;font-weight:bold;">' . e($fullName) . '</td></tr>'
     . '<tr><td style="padding:10px 0;border-bottom:1px solid #e7edef;color:#738792;">Email</td><td style="padding:10px 0;border-bottom:1px solid #e7edef;"><a href="mailto:' . e($email) . '" style="color:#087f8b;">' . e($email) . '</a></td></tr>'
     . '<tr><td style="padding:10px 0;border-bottom:1px solid #e7edef;color:#738792;">Organization</td><td style="padding:10px 0;border-bottom:1px solid #e7edef;">' . e($organization !== '' ? $organization : 'Not provided') . '</td></tr>'
-    . '<tr><td style="padding:10px 0;border-bottom:1px solid #e7edef;color:#738792;">Scientific subtheme</td><td style="padding:10px 0;border-bottom:1px solid #e7edef;">' . e($subthemeTitle !== '' ? $subthemeTitle : 'Not selected') . '</td></tr>'
+    . '<tr><td style="padding:10px 0;border-bottom:1px solid #e7edef;color:#738792;">Submission Type</td><td style="padding:10px 0;border-bottom:1px solid #e7edef;font-weight:bold;">' . e($submissionType) . '</td></tr>'
+    . '<tr><td style="padding:10px 0;border-bottom:1px solid #e7edef;color:#738792;">Scientific theme</td><td style="padding:10px 0;border-bottom:1px solid #e7edef;">' . e($subthemeTitle !== '' ? $subthemeTitle : 'Not selected') . '</td></tr>'
     . '<tr><td style="padding:10px 0;border-bottom:1px solid #e7edef;color:#738792;">Abstract title</td><td style="padding:10px 0;border-bottom:1px solid #e7edef;font-weight:bold;">' . e($title) . '</td></tr>'
     . '</table>'
     . '<h2 style="margin:24px 0 8px;font-size:15px;">Abstract summary</h2><div style="padding:15px;border-radius:8px;background:#f4f8f8;color:#425d6b;line-height:1.7;white-space:pre-wrap;">' . nl2br(e($summary)) . '</div>'
@@ -108,14 +111,16 @@ $htmlBody = '<!doctype html><html><body style="margin:0;background:#f2f6f8;font-
     . '</div></div></body></html>';
 
 try {
-    sendSmtpMail('coference@somcardio.so', $mailSubject, $htmlBody, $email);
+    sendSmtpMail('conference@somcardio.so', $mailSubject, $htmlBody, $email);
     setFlash('success', 'Your abstract was saved and emailed to the conference team. The scientific committee will review it soon.');
 } catch (Throwable $e) {
     error_log('Abstract submission email failed: ' . $e->getMessage());
     if (str_contains($e->getMessage(), 'SMTP credentials are missing or still set to placeholders')) {
-        setFlash('error', 'Your abstract was saved, but email delivery is not configured on this website yet. The administrator needs to configure the SMTP email settings. Please contact coference@somcardio.so and include your abstract title.');
+        setFlash('error', 'Your abstract was saved, but email delivery is not configured on this website yet. The administrator needs to configure the SMTP email settings. Please contact conference@somcardio.so and include your abstract title.');
+    } elseif (str_contains($e->getMessage(), 'response code 535')) {
+        setFlash('error', 'Your abstract was saved, but the configured Gmail SMTP server rejected authentication (535). Configure a valid SMTP app password or the correct mail-provider SMTP settings, then try again. Please contact conference@somcardio.so and include your abstract title.');
     } else {
-        setFlash('error', 'Your abstract was saved, but the email could not be delivered to the conference team. Please contact coference@somcardio.so and include your abstract title.');
+        setFlash('error', 'Your abstract was saved, but the email could not be delivered to the conference team. Please contact conference@somcardio.so and include your abstract title.');
     }
 }
 

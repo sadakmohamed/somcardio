@@ -12,9 +12,9 @@
  * ---------------------------------------------------------------
  */
 
-// Determine which sub-page we're on
-$confSubPage  = basename($_SERVER['PHP_SELF']);
-$confBaseUrl  = SITE_URL . '/conference';
+// Determine which sub-page we're on (strip .php extension)
+$confCurrentSlug = basename($_SERVER['PHP_SELF'], '.php');
+$confBaseUrl     = SITE_URL . '/conference';
 
 // Optional: pull the active conference title + year from DB for branding
 $confNavTitle = '';
@@ -33,7 +33,7 @@ try {
     $confNavTitle = 'SCS Conference';
 }
 
-// Sub-navigation link definitions  [label, filename]
+// Sub-navigation link definitions  [label, slug]
 $subNavItems = [
     ['About Conference',    ''],
     ['Speakers',            'speakers'],
@@ -65,11 +65,18 @@ $subNavItems = [
 
         <!-- Nav links (horizontal on desktop, collapsible on mobile) -->
         <div class="conf-subnav-links" id="confSubLinks" role="list">
-            <?php foreach ($subNavItems as [$label, $page]): ?>
-                    <a href="<?php echo $confBaseUrl . ($page !== '' ? '/' . $page : ''); ?>"
-                   class="conf-subnav-link<?php echo $confSubPage === $page ? ' active' : ''; ?>"
+            <?php foreach ($subNavItems as [$label, $page]): 
+                $isActive = false;
+                if ($page === '' && in_array($confCurrentSlug, ['index', 'about'], true)) {
+                    $isActive = true;
+                } elseif ($page !== '' && ($confCurrentSlug === $page || ($page === 'past' && $confCurrentSlug === 'past-detail'))) {
+                    $isActive = true;
+                }
+            ?>
+                <a href="<?php echo $confBaseUrl . ($page !== '' ? '/' . $page : ''); ?>"
+                   class="conf-subnav-link<?php echo $isActive ? ' active' : ''; ?>"
                    role="listitem"
-                   <?php echo $confSubPage === $page ? 'aria-current="page"' : ''; ?>>
+                   <?php echo $isActive ? 'aria-current="page"' : ''; ?>>
                     <span><?php echo htmlspecialchars($label, ENT_QUOTES, 'UTF-8'); ?></span>
                 </a>
             <?php endforeach; ?>

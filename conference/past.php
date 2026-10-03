@@ -21,7 +21,7 @@ require_once __DIR__ . '/../includes/header.php';
 
 <section class="past-public-hero">
     <div class="container past-public-hero-inner">
-        <div class="past-public-hero-copy"><span><i></i> THE SCS ARCHIVE</span><h1>Conferences that<br><em>move care forward.</em></h1><p>Stories, shared discoveries, and moments from Somali Cardiac Society gatherings.</p></div>
+        <div class="past-public-hero-copy"><span><i></i> FROM THE SCS ARCHIVE</span><h1>A milestone for<br><em>cardiovascular care.</em></h1><p>Stories, shared discoveries, and moments from Somali Cardiac Society gatherings.</p></div>
         <div class="past-public-hero-count"><strong><?php echo str_pad((string)count($pastConferences), 2, '0', STR_PAD_LEFT); ?></strong><span>ARCHIVED<br>GATHERINGS</span></div>
     </div>
 </section>

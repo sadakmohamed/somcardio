@@ -42,7 +42,7 @@ require_once __DIR__ . '/../includes/header.php';
             <div class="past-detail-story-label"><span>THE STORY</span><i></i><span><?php echo e($dateLabel); ?></span></div>
             <article class="past-detail-story">
                 <span class="past-detail-kicker">FROM THE SCS ARCHIVE</span>
-                <h2>A gathering remembered.</h2>
+                <h2>A milestone for cardiovascular care.</h2>
                 <div class="past-detail-body">
                     <?php if (trim((string)$conference['body']) !== ''): ?>
                         <?php foreach (preg_split('/\R\s*\R/', trim($conference['body'])) as $paragraph): ?>

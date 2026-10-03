@@ -59,7 +59,17 @@ $navDark = true; // Dark navbar header across all pages so mobile logo & hamburg
 
             <a href="<?php echo SITE_URL; ?>/news-events.php" class="<?php echo $currentPage === 'news-events.php' ? 'active' : ''; ?>">News &amp; Events</a>
 
-            <a href="<?php echo SITE_URL; ?>/conference" class="<?php echo in_array($currentPage, ['index.php']) || strpos($_SERVER['REQUEST_URI'] ?? '', '/conference/') !== false ? 'active' : ''; ?>">Conference</a>
+            <!-- Conference Dropdown -->
+            <div class="nav-dual <?php echo (strpos($_SERVER['REQUEST_URI'] ?? '', '/conference') !== false) ? 'active' : ''; ?>">
+                <a href="<?php echo SITE_URL; ?>/conference" class="nav-trigger">
+                    <span>Conference</span>
+                    <span class="nav-caret"></span>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="<?php echo SITE_URL; ?>/conference"><span>This Year's Conference</span></a>
+                    <a href="<?php echo SITE_URL; ?>/conference/past"><span>Past Conferences</span></a>
+                </div>
+            </div>
 
             <a href="<?php echo SITE_URL; ?>/contact.php" class="<?php echo $currentPage === 'contact.php' ? 'active' : ''; ?>">Contact Us</a>
         </div>

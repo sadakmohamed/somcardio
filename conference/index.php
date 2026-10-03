@@ -70,31 +70,43 @@ if (!$objectives) {
     ];
 }
 
-$attendeeSource = $activeConf['who_should_attend'] ?? '';
-$attendees = is_string($attendeeSource) ? json_decode($attendeeSource, true) : null;
-if (!is_array($attendees)) {
-    $attendees = preg_split('/[,\r\n]+/', (string)$attendeeSource, -1, PREG_SPLIT_NO_EMPTY);
-}
-$attendees = array_values(array_filter(array_map(static function ($item) {
-    return trim((string)$item);
-}, $attendees ?: [])));
-if (!$attendees) {
-    $attendees = ['Cardiologists and clinicians', 'Nurses and allied health professionals', 'Researchers and academics', 'Medical students and trainees', 'Health institutions and policymakers', 'Development and community partners'];
-}
-
-$attendeeDetails = [
-    'cardiologist' => ['stethoscope', 'Clinical practice', 'Share approaches to diagnosis, treatment, and long-term cardiac care.'],
-    'clinician' => ['stethoscope', 'Clinical practice', 'Share approaches to diagnosis, treatment, and long-term cardiac care.'],
-    'nurse' => ['first-aid-kit', 'Allied health', 'Bring essential care-team perspectives into the clinical conversation.'],
-    'research' => ['flask', 'Research & academia', 'Present findings, test ideas, and build new collaborations.'],
-    'academic' => ['flask', 'Research & academia', 'Present findings, test ideas, and build new collaborations.'],
-    'student' => ['graduation-cap', 'Students & trainees', 'Learn from regional experts and connect with mentors.'],
-    'trainee' => ['graduation-cap', 'Students & trainees', 'Learn from regional experts and connect with mentors.'],
-    'government' => ['landmark', 'Health leadership', 'Connect evidence with policy and stronger health systems.'],
-    'policy' => ['landmark', 'Health leadership', 'Connect evidence with policy and stronger health systems.'],
-    'ngo' => ['handshake', 'Partners', 'Coordinate efforts that expand access to cardiovascular services.'],
-    'partner' => ['handshake', 'Partners', 'Coordinate efforts that expand access to cardiovascular services.'],
-    'civil society' => ['users-three', 'Community & civil society', 'Bring community priorities into cardiovascular health planning.'],
+$whoShouldAttendList = [
+    [
+        'title' => 'Cardiovascular Professionals',
+        'desc'  => 'Cardiologists, cardiac surgeons, cardiac anesthetists, nurses, physiotherapists, and other cardiovascular care professionals.',
+        'icon'  => 'heartbeat',
+        'tag'   => 'Clinical Specialists'
+    ],
+    [
+        'title' => 'Other Health Professionals',
+        'desc'  => 'Physicians and healthcare professionals involved in cardiovascular prevention, diagnosis, treatment, and rehabilitation.',
+        'icon'  => 'stethoscope',
+        'tag'   => 'Multidisciplinary Care'
+    ],
+    [
+        'title' => 'Researchers & Academics',
+        'desc'  => 'Present research, exchange scientific knowledge, and develop new collaborations.',
+        'icon'  => 'flask',
+        'tag'   => 'Research & Science'
+    ],
+    [
+        'title' => 'Students & Trainees',
+        'desc'  => 'Medical students, residents, fellows, and other trainees interested in cardiovascular health.',
+        'icon'  => 'graduation-cap',
+        'tag'   => 'Future Leaders'
+    ],
+    [
+        'title' => 'Universities & Healthcare Institutions',
+        'desc'  => 'Strengthen academic, clinical, research, and institutional collaboration.',
+        'icon'  => 'buildings',
+        'tag'   => 'Institutional Partners'
+    ],
+    [
+        'title' => 'Partners, NGOs & Health Sector Stakeholders',
+        'desc'  => 'Connect organizations working to strengthen cardiovascular services and health systems.',
+        'icon'  => 'handshake',
+        'tag'   => 'Health Stakeholders'
+    ],
 ];
 
 require_once __DIR__ . '/../includes/header.php';
@@ -126,7 +138,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="container conf-index-background-grid">
             <div class="conf-index-section-label"><span>01 / THE CONFERENCE</span><i></i><span>OUR PURPOSE</span></div>
             <div class="conf-index-background-copy">
-                <h2>Better heart health begins when we move <em>forward together.</em></h2>
+                <h2>Building stronger cardiovascular care begins when we move <em>forward together.</em></h2>
                 <div class="conf-index-richtext">
                     <?php if ($backgroundText !== ''): ?>
                         <?php echo $backgroundText; ?>
@@ -145,25 +157,25 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="container conf-index-lead-grid">
             <div class="conf-index-lead-visual">
                 <?php if ($headPhoto): ?>
-                    <img src="<?php echo UPLOADS_URL . '/' . e($headPhoto); ?>" alt="<?php echo e($headName ?: 'Head of Conference'); ?>">
+                    <img src="<?php echo UPLOADS_URL . '/' . e($headPhoto); ?>" alt="<?php echo e($headName ?: 'Conference Chair'); ?>">
                 <?php else: ?>
-                    <div class="conf-index-lead-initials" aria-label="Conference leadership portrait placeholder">SCS</div>
+                    <div class="conf-index-lead-initials" aria-label="Conference chair portrait placeholder">SCS</div>
                 <?php endif; ?>
-                <div class="conf-index-lead-caption"><span>CONFERENCE LEADERSHIP</span><strong><?php echo e($headName ?: 'A shared regional vision'); ?></strong></div>
+                <div class="conf-index-lead-caption"><span>CONFERENCE CHAIR</span><strong><?php echo e($headName ?: 'A shared regional vision'); ?></strong></div>
                 <div class="conf-index-lead-visual-accent" aria-hidden="true"></div>
             </div>
             <div class="conf-index-lead-copy">
-                <span class="conf-index-kicker">A MESSAGE FROM THE CONFERENCE HEAD</span>
-                <h2>Welcome to a meeting of <em>minds and purpose.</em></h2>
+                <span class="conf-index-kicker">A MESSAGE FROM THE CONFERENCE CHAIR</span>
+                <h2>Together, we are building the future of <em>cardiovascular care in Somalia.</em></h2>
                 <div class="conf-index-quote-mark" aria-hidden="true">“</div>
                 <div class="conf-index-lead-message">
                     <?php if ($headMessage !== ''): ?>
                         <?php echo $headMessage; ?>
                     <?php else: ?>
-                        <p>We are pleased to welcome colleagues and partners to this year’s conference. Together, we can share knowledge, strengthen professional connections, and advance cardiovascular care across our region.</p>
+                        <p>Together, we are building the future of cardiovascular care in Somalia. We are pleased to welcome colleagues, researchers, trainees, and partners to this year’s conference to share clinical knowledge, foster scientific collaboration, and elevate patient outcomes across our country.</p>
                     <?php endif; ?>
                 </div>
-                <?php if ($headName): ?><div class="conf-index-signature"><span></span><strong><?php echo e($headName); ?></strong><small>Head of Conference</small></div><?php endif; ?>
+                <?php if ($headName): ?><div class="conf-index-signature"><span></span><strong><?php echo e($headName); ?></strong><small>Conference Chair</small></div><?php endif; ?>
             </div>
         </div>
     </section>
@@ -172,7 +184,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="container">
             <div class="conf-index-section-heading">
                 <div><span class="conf-index-kicker">02 / WHAT WE’RE HERE TO DO</span><h2>Focused on progress<br><em>that matters.</em></h2></div>
-                <p>Our objectives keep the conversation grounded in practical learning, regional partnership, and better outcomes for patients.</p>
+                <p>Our objectives keep the conversation grounded in practical learning, scientific exchange, stronger collaboration, and better cardiovascular outcomes for patients across Somalia.</p>
             </div>
             <div class="conf-index-objective-grid">
                 <?php foreach ($objectives as $index => $objective): ?>
@@ -194,17 +206,10 @@ require_once __DIR__ . '/../includes/header.php';
                 <p>Cardiovascular progress takes a whole community. Join the people learning, caring, researching, and building what comes next.</p>
             </div>
             <div class="conf-index-attendee-grid">
-                <?php foreach ($attendees as $index => $attendee): ?>
-                    <?php
-                    $attendeeKey = strtolower((string)$attendee);
-                    $attendeeMeta = ['users-three', 'Regional insight', 'Bring your experience and ideas into the conversation.'];
-                    foreach ($attendeeDetails as $match => $details) {
-                        if (strpos($attendeeKey, $match) !== false) { $attendeeMeta = $details; break; }
-                    }
-                    ?>
+                <?php foreach ($whoShouldAttendList as $index => $item): ?>
                     <article class="conf-index-attendee">
-                        <div class="conf-index-attendee-icon"><i class="ph ph-<?php echo e($attendeeMeta[0]); ?>" aria-hidden="true"></i></div>
-                        <div class="conf-index-attendee-copy"><span><?php echo e($attendeeMeta[1]); ?></span><h3><?php echo e($attendee); ?></h3><p><?php echo e($attendeeMeta[2]); ?></p></div>
+                        <div class="conf-index-attendee-icon"><i class="ph ph-<?php echo e($item['icon']); ?>" aria-hidden="true"></i></div>
+                        <div class="conf-index-attendee-copy"><span><?php echo e($item['tag']); ?></span><h3><?php echo e($item['title']); ?></h3><p><?php echo e($item['desc']); ?></p></div>
                         <span class="conf-index-attendee-number"><?php echo str_pad((string)($index + 1), 2, '0', STR_PAD_LEFT); ?></span>
                     </article>
                 <?php endforeach; ?>
@@ -216,7 +221,7 @@ require_once __DIR__ . '/../includes/header.php';
 <section class="conf-index-archive">
     <div class="container">
         <div class="conf-index-section-heading">
-            <div><span class="conf-index-kicker">A LOOK BACK</span><h2>Progress is a story<br><em>we build together.</em></h2></div>
+            <div><span class="conf-index-kicker">FROM THE SCS ARCHIVE</span><h2>A milestone for<br><em>cardiovascular care.</em></h2></div>
             <a class="conf-index-text-link" href="<?php echo SITE_URL; ?>/conference/past">Explore the archive <span aria-hidden="true">&#8594;</span></a>
         </div>
         <div class="conf-index-archive-grid">

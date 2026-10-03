@@ -56,25 +56,26 @@ require_once __DIR__ . '/../includes/header.php';
 <section class="conf-abstract-hero conf-abstract-hero-simple" style="--abstract-hero-image:url('<?php echo !empty($conf['hero_image']) ? UPLOADS_URL . '/' . e($conf['hero_image']) : SITE_URL . '/images/hero2.png'; ?>')">
     <div class="container conf-abstract-hero-inner">
         <div class="conf-abstract-hero-copy">
-            <span class="conf-abstract-eyebrow"><i></i> <?php echo e($conf['year'] ?? date('Y')); ?> / SCIENTIFIC PROGRAMME</span>
-            <h1>Share the work<br><em>moving care forward.</em></h1>
-            <p>Submit your research for consideration at the Somali Cardiac Society conference.</p>
+            <span class="conf-abstract-eyebrow"><i></i> 2026 / CALL FOR ABSTRACTS</span>
+            <h1>Share the research<br><em>shaping cardiovascular care</em></h1>
+            <p>Submit your original research and clinical work for consideration at the 2nd National Cardiac Conference 2026</p>
         </div>
         <aside class="conf-deadline-card<?php echo $deadlineTimestamp && $deadlineTimestamp < time() ? ' is-closed' : ''; ?>" id="countdownBox" <?php if ($deadlineTimestamp && $deadlineTimestamp > time()): ?>data-deadline="<?php echo (int)$deadlineTimestamp * 1000; ?>"<?php endif; ?>>
-            <div class="conf-deadline-card-top"><span class="conf-deadline-pulse"></span><span>ABSTRACT DEADLINE</span><i class="ph ph-hourglass-medium" aria-hidden="true"></i></div>
+            <div class="conf-deadline-card-top"><span class="conf-deadline-pulse"></span><span>ABSTRACT SUBMISSION DEADLINE</span><i class="ph ph-hourglass-medium" aria-hidden="true"></i></div>
             <?php if ($deadlineTimestamp && $deadlineTimestamp > time()): ?>
-                <div class="conf-deadline-date"><?php echo e(date('F j, Y', $deadlineTimestamp)); ?></div>
+                <div class="conf-deadline-date"><?php echo e(date('j F Y', $deadlineTimestamp)); ?></div>
                 <div class="conf-deadline-count" aria-live="polite">
                     <div><strong data-count-days>--</strong><span>Days</span></div><b>:</b>
                     <div><strong data-count-hours>--</strong><span>Hours</span></div><b>:</b>
                     <div><strong data-count-minutes>--</strong><span>Minutes</span></div><b>:</b>
                     <div><strong data-count-seconds>--</strong><span>Seconds</span></div>
                 </div>
-                <p class="conf-deadline-foot">Time remaining to submit your work</p>
+                <p class="conf-deadline-foot">Time remaining to submit your abstract</p>
             <?php elseif ($deadlineTimestamp): ?>
                 <div class="conf-deadline-closed"><i class="ph ph-lock-key" aria-hidden="true"></i><strong>Submissions are closed</strong><span>The abstract deadline has passed.</span></div>
             <?php else: ?>
-                <div class="conf-deadline-closed conf-deadline-unset"><i class="ph ph-calendar-dots" aria-hidden="true"></i><strong>Deadline to be announced</strong><span>Check back for submission dates.</span></div>
+                <div class="conf-deadline-date">15 October 2026</div>
+                <p class="conf-deadline-foot">Time remaining to submit your abstract</p>
             <?php endif; ?>
         </aside>
     </div>
@@ -97,8 +98,8 @@ require_once __DIR__ . '/../includes/header.php';
 <section class="conf-abstract-criteria">
     <div class="container">
         <div class="conf-abstract-section-heading">
-            <div><span class="conf-abstract-kicker">SCIENTIFIC REVIEW</span><h2>Evaluation criteria</h2></div>
-            <p>Submissions are assessed against the committee’s published review criteria.</p>
+            <div><span class="conf-abstract-kicker">SCIENTIFIC REVIEW</span><h2>Evaluation Criteria</h2></div>
+            <p>Submissions are evaluated by the Scientific Committee according to scientific quality, relevance, originality, methodology, and potential impact on cardiovascular care.</p>
         </div>
         <?php if ($criteria): ?>
             <div class="conf-criteria-grid">
@@ -115,8 +116,8 @@ require_once __DIR__ . '/../includes/header.php';
 <section class="conf-abstract-subthemes">
     <div class="container">
         <div class="conf-abstract-section-heading">
-            <div><span class="conf-abstract-kicker">SELECT ONE THEME</span><h2>Submit your abstract</h2></div>
-            <p>Choose the scientific theme that best fits your work, then complete the submission form below.</p>
+            <div><span class="conf-abstract-kicker">SELECT A SCIENTIFIC THEME</span><h2>Submit your abstract</h2></div>
+            <p>Choose the scientific theme that best fits your research, then complete the submission form below</p>
         </div>
         <?php if ($subthemes): ?>
             <div class="conf-subtheme-grid" id="abstractSubthemeOptions" role="radiogroup" aria-label="Select an abstract subtheme">
@@ -130,7 +131,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div class="conf-abstract-empty"><i class="ph ph-sparkle" aria-hidden="true"></i><p>No subthemes are currently listed. Contact coference@somcardio.so for submission guidance.</p></div>
+            <div class="conf-abstract-empty"><i class="ph ph-sparkle" aria-hidden="true"></i><p>No subthemes are currently listed. Contact conference@somcardio.so for submission guidance.</p></div>
         <?php endif; ?>
     </div>
 </section>
@@ -138,23 +139,58 @@ require_once __DIR__ . '/../includes/header.php';
 <section class="conf-abstract-submit" id="abstract-submission">
     <div class="container">
         <div class="conf-abstract-form-card">
-            <div class="conf-abstract-form-top"><div><span>YOUR RESEARCH / <?php echo e($conf['year'] ?? date('Y')); ?></span><h2>Abstract submission form</h2></div><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i></div>
+            <div class="conf-abstract-form-top"><div><span>2ND NATIONAL CARDIAC CONFERENCE / 2026</span><h2>Abstract submission form</h2></div><i class="ph ph-paper-plane-tilt" aria-hidden="true"></i></div>
             <form action="<?php echo SITE_URL; ?>/conference/abstract-action" method="post" enctype="multipart/form-data" class="conf-abstract-form">
                 <?php echo csrfField(); ?>
-            <input type="hidden" name="subtheme_id" id="selectedSubthemeId" value="">
-            <div class="conf-selected-subtheme" id="selectedSubthemeSummary" hidden><i class="ph ph-check-circle" aria-hidden="true"></i><span>Selected scientific theme</span><strong id="selectedSubthemeLabel"></strong><a href="#abstractSubthemeOptions">Change</a></div>
+                <div class="conf-selected-subtheme" id="selectedSubthemeSummary" hidden><i class="ph ph-check-circle" aria-hidden="true"></i><span>Selected scientific theme:</span><strong id="selectedSubthemeLabel"></strong><a href="#abstractSubthemeOptions">Change</a></div>
                 <div class="conf-abstract-form-grid">
-                    <div class="form-group"><label for="abstractFullName">Full name <b>*</b></label><input id="abstractFullName" type="text" name="full_name" placeholder="Your name as it should appear" autocomplete="name" required></div>
-                    <div class="form-group"><label for="abstractEmail">Email address <b>*</b></label><input id="abstractEmail" type="email" name="email" placeholder="you@example.com" autocomplete="email" required></div>
-                    <div class="form-group"><label for="abstractOrganization">Institution / organization</label><input id="abstractOrganization" type="text" name="organization" placeholder="Hospital, university, or organization" autocomplete="organization"></div>
-                    <div class="form-group"><label for="abstractTitle">Abstract title <b>*</b></label><input id="abstractTitle" type="text" name="title" placeholder="A concise title for your research" required></div>
-                    <div class="form-group conf-abstract-summary-field"><label for="abstractSummary">Abstract summary <b>*</b></label><textarea id="abstractSummary" name="summary" rows="5" placeholder="Briefly summarize your background, methods, results, and conclusion..." required></textarea><small>Use the structured headings described in the guidelines.</small></div>
-                    <div class="form-group conf-abstract-file-field"><label for="abstractFile">Abstract PDF <b>*</b></label><input id="abstractFile" type="file" name="abstract_file" accept="application/pdf,.pdf" required><small>PDF only. Include the complete abstract document.</small></div>
+                    <div class="form-group">
+                        <label for="abstractFullName">1 Full name <b>*</b></label>
+                        <input id="abstractFullName" type="text" name="full_name" placeholder="Name of the submitting/presenting author" autocomplete="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="abstractEmail">2 Email address <b>*</b></label>
+                        <input id="abstractEmail" type="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="abstractOrganization">3 Institution / Organization <b>*</b></label>
+                        <input id="abstractOrganization" type="text" name="organization" placeholder="Hospital, university, or organization" autocomplete="organization" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="abstractTitle">4 Abstract title <b>*</b></label>
+                        <input id="abstractTitle" type="text" name="title" placeholder="A concise title for your research" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="abstractSubmissionType">5 Submission Type <b>*</b></label>
+                        <select id="abstractSubmissionType" name="submission_type" required>
+                            <option value="Original Research">Original Research</option>
+                            <option value="Case Report or Case Series">Case Report or Case Series</option>
+                            <option value="Quality Improvement">Quality Improvement</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="selectedSubthemeId">6 Scientific Theme <b>*</b></label>
+                        <select id="selectedSubthemeId" name="subtheme_id" required>
+                            <option value="">-- Choose a scientific theme --</option>
+                            <?php foreach ($subthemes as $theme): ?>
+                                <option value="<?php echo (int)$theme['id']; ?>"><?php echo e($theme['title']); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group conf-abstract-file-field" style="grid-column:1/-1;">
+                        <label for="abstractFile">7 Abstract PDF <b>*</b></label>
+                        <input id="abstractFile" type="file" name="abstract_file" accept="application/pdf,.pdf" required>
+                        <small>Upload the complete abstract in PDF format according to the submission guidelines.</small>
+                    </div>
                 </div>
-                <div class="conf-abstract-form-footer"><span><i class="ph ph-lock-key" aria-hidden="true"></i> Your submission details are sent securely.</span><button type="submit" class="conf-abstract-submit-button">Send abstract <i class="ph ph-arrow-up-right" aria-hidden="true"></i></button></div>
+                <div class="conf-abstract-form-footer">
+                    <span><i class="ph ph-lock-key" aria-hidden="true"></i> 🔒 Your abstract and submission details are transmitted securely</span>
+                    <button type="submit" class="conf-abstract-submit-button">Send abstract <i class="ph ph-arrow-up-right" aria-hidden="true"></i></button>
+                </div>
             </form>
         </div>
-        <p class="conf-abstract-help-line">Need help with your submission? <a href="mailto:coference@somcardio.so">Contact coference@somcardio.so</a></p>
+        <p class="conf-abstract-help-line">Need help with your submission? <a href="mailto:conference@somcardio.so">Contact conference@somcardio.so</a></p>
     </div>
 </section>
 </main>
@@ -206,6 +242,21 @@ require_once __DIR__ . '/../includes/header.php';
             selectedLabel.textContent = card.dataset.subthemeTitle;
             selectedSummary.hidden = false;
         }
+        selectedId.addEventListener('change', function () {
+            var val = this.value;
+            cards.forEach(function (item) {
+                var active = item.dataset.subthemeId === val;
+                item.classList.toggle('is-selected', active);
+                item.setAttribute('aria-checked', active ? 'true' : 'false');
+            });
+            var opt = this.options[this.selectedIndex];
+            if (opt && opt.text && val) {
+                selectedLabel.textContent = opt.text;
+                selectedSummary.hidden = false;
+            } else {
+                selectedSummary.hidden = true;
+            }
+        });
         cards.forEach(function (card, index) {
             card.addEventListener('click', function () { selectTheme(card); });
             card.addEventListener('keydown', function (event) {

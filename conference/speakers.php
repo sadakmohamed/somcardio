@@ -39,9 +39,9 @@ $pageDescription = 'Meet the speakers and presenters at the Somali Cardiac Socie
 <section class="conf-speaker-hero" style="--speaker-hero-image:url('<?php echo !empty($conf['hero_image']) ? UPLOADS_URL . '/' . e($conf['hero_image']) : SITE_URL . '/images/hero2.png'; ?>')">
     <div class="container conf-speaker-hero-inner">
         <div class="conf-speaker-hero-copy">
-            <span class="conf-speaker-eyebrow"><i></i> <?php echo e($conf['year'] ?? date('Y')); ?> CONFERENCE FACULTY</span>
-            <h1>Ideas shaped by<br><em>remarkable people.</em></h1>
-            <p>Meet the voices bringing clinical insight, research, and fresh perspective to cardiovascular care across the region.</p>
+            <span class="conf-speaker-eyebrow"><i></i> 2026 CONFERENCE FACULTY</span>
+            <h1>Expert voices · Shared knowledge<br><em>Better cardiovascular care</em></h1>
+            <p>Meet the experts bringing clinical insight, scientific evidence, research, and experience to advance cardiovascular care in Somalia and beyond</p>
             <a class="conf-speaker-hero-link" href="#speaker-ceremony">Meet this year’s speakers <span aria-hidden="true">&#8595;</span></a>
         </div>
         <div class="conf-speaker-hero-index"><strong><?php echo str_pad((string)count($speakers), 2, '0', STR_PAD_LEFT); ?></strong><span>FEATURED<br>VOICES</span></div>
@@ -51,8 +51,8 @@ $pageDescription = 'Meet the speakers and presenters at the Somali Cardiac Socie
 
 <?php
 $speakerSections = [
-    ['id' => 'speaker-ceremony', 'eyebrow' => 'THE OPENING', 'title' => 'Welcome & Opening Ceremony', 'description' => 'Leaders and guests setting the direction for a shared regional conversation.', 'speakers' => $welcome, 'fallback' => 'Opening ceremony speakers will be announced soon.'],
-    ['id' => 'speaker-keynotes', 'eyebrow' => 'THE BIG IDEAS', 'title' => 'Keynote Speakers', 'description' => 'Expert perspectives on the science, systems, and future of cardiovascular care.', 'speakers' => $keynote, 'fallback' => 'Keynote speaker announcements will be shared soon.'],
+    ['id' => 'speaker-ceremony', 'eyebrow' => 'THE OPENING', 'title' => 'Welcome & Opening Ceremony', 'description' => 'Leaders and distinguished guests setting the direction for a shared national conversation on cardiovascular health', 'speakers' => $welcome, 'fallback' => 'Opening ceremony speakers will be announced soon.'],
+    ['id' => 'speaker-keynotes', 'eyebrow' => 'THE BIG IDEAS', 'title' => 'Keynote Speakers', 'description' => 'Expert perspectives on the science, systems, and future of cardiovascular care', 'speakers' => $keynote, 'fallback' => 'Keynote speaker announcements will be shared soon.'],
 ];
 foreach ($speakerSections as $sectionIndex => $section):
 ?>
@@ -88,7 +88,13 @@ foreach ($speakerSections as $sectionIndex => $section):
 <?php endforeach; ?>
 
 <section class="conf-speaker-cta">
-    <div class="container conf-speaker-cta-inner"><div><span>TAKE PART IN THE CONVERSATION</span><h2>Bring your perspective<br>to the room.</h2></div><a href="<?php echo SITE_URL; ?>/conference/registration" class="conf-speaker-cta-button">Join the conference <span aria-hidden="true">&#8599;</span></a></div>
+    <div class="container conf-speaker-cta-inner">
+        <div>
+            <span>BE PART OF THE CONFERENCE</span>
+            <h2>Join the conversation shaping the future of cardiovascular care</h2>
+        </div>
+        <a href="<?php echo SITE_URL; ?>/conference/registration" class="conf-speaker-cta-button">Register now <span aria-hidden="true">&#8594;</span></a>
+    </div>
 </section>
 
 <?php require_once __DIR__ . '/../includes/footer.php'; ?>
